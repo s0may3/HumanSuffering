@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Afghan Migration — Storytelling</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg0:#000;
+      --bg1:#020617;
+      --bg2:#0b1220;
+      --card:#071023;
+
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --soft:#6b7280;
+
+      --border:rgba(148,163,184,.22);
+
+      /* Semantic Migration Palette */
+      --pressure:#fbbf24;
+      --shock:#fb7185;
+      --route:#92400e;
+      --destination:#64748b;
+      --context:#9ca3af;
+
+      /* Backward compatibility */
+      --accent: var(--pressure);
+      --accent2:#f59e0b;
+      --glow:rgba(251,191,36,.16);
+      --glowShock:rgba(251,113,133,.14);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ margin:0; padding:0; }
+
+    body{
+      font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      color:var(--text);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .wrap{ max-width:1180px; margin:0 auto; padding:20px 16px 70px; }
+
+    /* HEADER */
+    .site-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 6px 16px;
+    }
+    .site-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .site-title strong{
+      font-size:14px;
+      letter-spacing:.02em;
+    }
+    .site-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+    }
+    .site-nav a{
+      font-size:12px;
+      color:var(--muted);
+      text-decoration:none;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.22);
+      background:rgba(15,23,42,.55);
+      transition:all .15s ease;
+      white-space:nowrap;
+    }
+    .site-nav a:hover{
+      color:var(--text);
+      border-color: rgba(251,191,36,.5);
+      background:rgba(251,191,36,.08);
+    }
+
+    /* HERO */
+    .hero{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(15,23,42,.95), rgba(15,23,42,.72));
+      box-shadow:0 18px 50px rgba(0,0,0,.68), 0 0 0 1px rgba(15,23,42,.9);
+      padding:22px 18px;
+      position:relative;
+      overflow:hidden;
+      margin-bottom:18px;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-50%;
+      background:
+        radial-gradient(circle at 0 0, rgba(251,191,36,.22), transparent 55%),
+        radial-gradient(circle at 100% 0, rgba(251,191,36,.12), transparent 55%);
+      opacity:.75;
+      pointer-events:none;
+      z-index:-1;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.35);
+      background:rgba(15,23,42,.86);
+      color:var(--muted);
+      font-size:11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:var(--accent);
+      box-shadow:0 0 14px rgba(251,191,36,.8);
+    }
+
+    h1{
+      font-size:clamp(26px, 4.2vw, 44px);
+      margin:12px 0 10px;
+      letter-spacing:.02em;
+    }
+
+    .sub{
+      max-width:900px;
+      color:var(--muted);
+      font-size:clamp(13px, 2vw, 15px);
+      margin:0;
+    }
+
+    .ethics{
+      margin-top:10px;
+      color:var(--soft);
+      font-size:12px;
+      max-width:900px;
+    }
+
+    /* TEAM BLOCK */
+    .team-block{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .team-block .tag{
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.22);
+      background:rgba(15,23,42,.55);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .team-block a{
+      color:var(--accent);
+      text-decoration:none;
+    }
+    .team-block a:hover{
+      text-decoration:underline;
+    }
+
+    /* SCROLLY LAYOUT */
+    .scrolly{
+      display:grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      gap:16px;
+      align-items:start;
+      margin-top:16px;
+    }
+
+    .article{
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      box-shadow:0 14px 34px rgba(0,0,0,.6), 0 0 0 1px rgba(15,23,42,.9);
+      padding:16px 14px;
+    }
+
+    .step{
+      border:1px solid rgba(148,163,184,.18);
+      background:linear-gradient(135deg, rgba(2,6,23,.55), rgba(2,6,23,.35));
+      border-radius:16px;
+      padding:14px;
+      margin:12px 0;
+      min-height:62vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .step.is-active{
+      border-color: rgba(251,191,36,.65);
+      background:linear-gradient(135deg, rgba(251,191,36,.08), rgba(2,6,23,.35));
+      transform: translateY(-2px);
+    }
+
+    .kicker{
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin:0 0 8px;
+    }
+
+    .step h2{
+      font-size:clamp(18px, 2.5vw, 22px);
+      margin:0 0 10px;
+    }
+
+    .step p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--soft);
+    }
+
+    /* STICKY GRAPHIC */
+    .graphic{
+      position:sticky;
+      top:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.58);
+      box-shadow:0 14px 34px rgba(0,0,0,.65), 0 0 0 1px rgba(15,23,42,.9);
+      padding:14px;
+      min-height:74vh;
+    }
+
+    .graphic-header{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .graphic-title{
+      margin:0;
+      font-size:13px;
+      font-weight:600;
+    }
+
+    .graphic-sub{
+      margin:4px 0 0;
+      font-size:12px;
+      color:var(--soft);
+      max-width: 520px;
+    }
+
+    #viz{
+      width:100%;
+      border-radius:14px;
+      border:1px dashed rgba(156,163,175,.32);
+      background:
+        linear-gradient(135deg, rgba(15,23,42,.92), rgba(15,23,42,.72)),
+        repeating-linear-gradient(-45deg, rgba(55,65,81,.35) 0, rgba(55,65,81,.35) 1px, transparent 1px, transparent 6px);
+      overflow:hidden;
+    }
+
+    #viz svg{ width:100%; height:auto; display:block; }
+
+    #viz:focus{
+      outline: 2px solid rgba(251,191,36,.6);
+      outline-offset: 3px;
+    }
+
+    .legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    /* whole legend hide */
+    .is-hidden{ display:none !important; }
+
+    /* hide individual badges (needed for filtering) */
+    .badge.is-hidden{ display:none !important; }
+
+    .badge{
+      font-size:11px;
+      color:var(--muted);
+      border:1px solid rgba(148,163,184,.2);
+      background:rgba(15,23,42,.75);
+      padding:4px 8px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .swatch{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      display:inline-block;
+      border:1px solid rgba(148,163,184,.25);
+      box-shadow:0 0 0 2px rgba(2,6,23,.35) inset;
+    }
+    .swatch[data-swatch="pressure"]{ background: var(--pressure); }
+    .swatch[data-swatch="shock"]{ background: var(--shock); }
+    .swatch[data-swatch="route"]{ background: var(--route); }
+    .swatch[data-swatch="destination"]{ background: var(--destination); }
+    .swatch[data-swatch="context"]{ background: var(--context); }
+
+    .footer-note{
+      margin-top:10px;
+      font-size:11px;
+      color:var(--soft);
+      text-align:right;
+    }
+
+    /* METHODOLOGY */
+    .methodology{
+      margin-top:22px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(2,6,23,.55);
+      box-shadow:0 14px 34px rgba(0,0,0,.6), 0 0 0 1px rgba(15,23,42,.9);
+      padding:16px 14px;
+    }
+    .methodology h2{ margin:0 0 10px; font-size:18px; }
+    .methodology h3{ margin:14px 0 6px; font-size:14px; color:var(--text); }
+    .methodology p, .methodology li{ color:var(--muted); font-size:13px; }
+    .methodology a{ color:var(--accent); text-decoration:none; }
+    .methodology a:hover{ text-decoration:underline; }
+    .methodology .small{ color:var(--soft); font-size:12px; }
+
+    footer{
+      margin-top:22px;
+      padding:14px 6px 0;
+      color:var(--soft);
+      font-size:12px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:10px;
+    }
+    footer a{ color:var(--accent); text-decoration:none; }
+    footer a:hover{ text-decoration:underline; }
+
+    @media (max-width: 950px){
+      .scrolly{ grid-template-columns:1fr; }
+      .graphic{ position:relative; min-height:auto; }
+      .step{ min-height:50vh; }
+      .site-header{ padding-bottom:10px; }
+    }
+
+/* STORYWIDE — single-column narrative chart */
+.storywide{
+  margin-top:22px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:rgba(2,6,23,55);
+  box-shadow:0 14px 34px rgba(0,0,0,6), 0 0 0 1px rgba(15,23,42,9);
+  padding:16px 14px;
+}
+
+.storywide-head h2{ margin:0 0 6px; font-size:18px; }
+.storywide-head .small{ margin:0; color:var(--soft); font-size:12px; }
+
+.storywide-one{ margin-top:12px; }
+
+#storywide-viz{
+  width:100%;
+  border-radius:16px;
+  border:1px solid rgba(148,163,184,18);
+  background:linear-gradient(135deg, rgba(15,23,42,92), rgba(15,23,42,72));
+  overflow:hidden;
+}
+#storywide-viz svg{ width:100%; height:auto; display:block; }
+
+.storywide-metrics{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:10px;
+  margin-top:12px;
+}
+@media (max-width: 900px){
+  .storywide-metrics{ grid-template-columns:1fr; }
+}
+
+.metric{
+  border:1px solid rgba(148,163,184,18);
+  background:linear-gradient(135deg, rgba(2,6,23,55), rgba(2,6,23,35));
+  border-radius:14px;
+  padding:10px 12px;
+}
+.metric .label{ color:var(--soft); font-size:11px; }
+.metric .value{ color:var(--text); font-size:18px; font-weight:800; letter-spacing:.02em; }
+
+
+/* STORYWIDE — interaction */
+#storywide-viz{ cursor: ew-resize; }
+
+
+/* DOWNLOAD GRID (Methodology → Data cleaning & imputation) */
+.dl-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:12px;
+  margin-top:10px;
+}
+.dl-card{
+  border:1px solid rgba(148,163,184,.18);
+  border-radius:14px;
+  background:rgba(2,6,23,.35);
+  padding:12px 12px;
+}
+.dl-card h4{
+  margin:0 0 8px;
+  font-size:13px;
+  color: var(--text);
+}
+.dl-card ul{
+  margin:0;
+  padding-left:18px;
+  color:var(--muted);
+  font-size:12px;
+}
+.dl-card a{ color: var(--accent); text-decoration: underline; }
+@media (max-width: 900px){
+  .dl-grid{ grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="site-header" id="top" aria-label="Site header">
+      <a class="site-title" href="#top">
+        <span class="dot" aria-hidden="true"></span>
+        <strong>Afghan Migration — Data Story</strong>
+      </a>
+      <nav class="site-nav" aria-label="Site navigation">
+        <a href="#story">Story</a>
+        <a href="#methodology">Methodology</a>
+        <a href="#references">References</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-label="Hero section">
+      <div class="pill"><span class="dot"></span><span>Storytelling • Afghan Migration</span></div>
+      <h1>Afghan Migration: Pressure, Routes, Destinations and Outcomes</h1>
+      
+
+      <div class="team-block" aria-label="Team and data source">
+        <span class="tag"><strong>Designed by:</strong> Somayyeh Eslami</span>
+        
+        
+      </div>
+    </section>
+
+    <section class="scrolly" id="story" aria-label="Scrollytelling story section">
+      <div class="article" aria-label="Narrative steps">
+
+        <div class="step" data-mode="overview">
+        
+          <h2>Overview: migration pressure over time</h2>
+
+          <p>
+            We begin by looking at the long-term evolution of outward migration from Afghanistan.
+          </p>
+
+          <p>
+            Rather than focusing on individual events, this overview highlights how migration pressure has persisted and changed over time. Viewing the full timeline helps establish a baseline before examining specific shocks, routes, and destinations in later sections.
+          </p>
+
+          <p class="note">
+            Units: people (counts). Time scale: annual. Geography: origin Afghanistan → destination country.
+          </p>
+        </div>
+
+        <div class="step" data-mode="shocks">
+         
+          <h2>Shocks and economic volatility</h2>
+
+          <p>
+            Instead of looking at migration directly, this section focuses on economic instability as contextual background.
+          </p>
+
+          <p>
+            The chart shows the distribution of food price changes over time. Large deviations in this distribution represent periods of economic shock, highlighting how volatility — rather than gradual trends — shapes everyday conditions.
+          </p>
+
+          <p class="note">
+            Chart type: histogram of food price changes. Values represent year-to-year changes, aggregated across commodities.
+          </p>
+        </div>
+
+        <div class="step" data-mode="idps">
+         
+          <h2>Inside Afghanistan: internal displacement (IDPs)</h2>
+          <p>After examining long-term migration pressure and economic volatility, we shift the focus inside Afghanistan.
+
+Not all displacement immediately crosses international borders. Internal displacement is often the first visible stage of migration pressure, reflecting how stress accumulates unevenly across space.
+
+This map shows the distribution of internally displaced people (IDPs) across provinces. Rather than explaining causes, it highlights spatial concentration — where displacement burdens are highest at a given point in time.
+</p>
+          <p class="note">Map type: Choropleth (admin1). Units: people (counts).</p>
+        </div>
+
+        <div class="step" data-mode="routes">
+          
+          <h2>Cross-border destinations and corridors (latest year)</h2>
+
+          <p>
+            Up to this point, we examined pressure and displacement inside Afghanistan. Now we look beyond the border.
+          </p>
+
+          <p>
+            This section maps the most common destination countries for Afghan refugees and asylum-seekers in the latest available year. The visualization highlights both concentration (which countries receive the most) and direction (corridors from Afghanistan to destinations).
+          </p>
+
+          <p class="note">
+            Map + flow arrows + Sankey. Data: refugee and asylum-seeker counts aggregated by destination country (latest year).
+          </p>
+        </div>
+
+        <div class="step" data-mode="destinations">
+          <h3> Beyond routes: hosting pressure</h3>
+          <p>
+            The previous section illustrated the main cross-border routes taken by Afghan refugees
+            and the relative scale of these movements.
+            However, the significance of these flows cannot be fully understood by volume alone.
+          </p>
+          <p>
+            Once refugees arrive at their destinations, the question shifts from
+            <em>where people go</em> to <em>how hosting countries absorb and sustain these populations</em>.
+            Different destinations face markedly different levels of pressure,
+            depending not only on the number of arrivals, but also on their demographic
+            and economic capacity.
+          </p>
+          <p>
+            This section therefore compares Afghan refugee destinations
+            in relation to host-country capacity,
+            highlighting how unevenly the burden of displacement is distributed
+            across destination countries.
+          </p>
+        </div>
+
+        <!--  Added back: Section 6 -->
+        <div class="step" data-mode="protection">
+         
+          <h2>Protection, return, and unresolved outcomes</h2>
+
+          <p>
+            Migration does not end at arrival. For many displaced Afghans, destination countries can represent a temporary stage rather than a final resolution.
+          </p>
+
+          <p>
+            This final section shifts the focus from movement and destinations to outcomes: protection status, return-related pressure, and the constraints that shape long-term stability.
+            It frames displacement as an ongoing condition that can remain unresolved even after crossing borders.
+          </p>
+
+          <p class="note">
+            Conceptual focus: protection, return, and uncertainty in displacement outcomes.
+          </p>
+        </div>
+
+      </div>
+
+      <aside class="graphic" aria-label="Visualization panel">
+        <div class="graphic-header">
+          <div>
+            <p class="graphic-title" id="gTitle">Overview — Migration pressure</p>
+            <p class="graphic-sub" id="gSub">Scroll to advance. The visualization transforms by section.</p>
+          </div>
+          <div class="pill" style="font-size:10px;">
+            <span class="dot"></span><span id="gMode">OVERVIEW</span>
+          </div>
+        </div>
+
+        <div id="viz" tabindex="0" aria-label="Interactive visualization canvas"></div>
+
+        <div class="legend" id="legend" aria-label="Semantic legend">
+          <span class="badge" data-key="pressure"><span class="swatch" data-swatch="pressure" aria-hidden="true"></span>Pressure / population</span>
+          <span class="badge" data-key="shock"><span class="swatch" data-swatch="shock" aria-hidden="true"></span>Shock / spike</span>
+          <span class="badge" data-key="route"><span class="swatch" data-swatch="route" aria-hidden="true"></span>Route / flow</span>
+          <span class="badge" data-key="destination"><span class="swatch" data-swatch="destination" aria-hidden="true"></span>Destination</span>
+          <span class="badge" data-key="context"><span class="swatch" data-swatch="context" aria-hidden="true"></span>Context / missingness</span>
+        </div>
+
+        <div class="footer-note">Sticky on desktop · responsive on mobile</div>
+      </aside>
+    </section>
+
+
+<section class="storywide" id="storywide" aria-label="Story summary section">
+  <div class="storywide-head">
+    <h2>The full story — scrub to read</h2>
+    <p class="small">
+      Autoplay starts when visible. Click the chart to pause/resume. Move your mouse to scrub and read what is happening at that moment.
+    </p>
+  </div>
+
+  <div class="storywide-one">
+    <div id="storywide-viz" aria-label="Autoplay narrative visualization"></div>
+  </div>
+</section>
+
+<section id="methodology" class="methodology" aria-label="Methodology section">
+  <h2>Methodology</h2>
+
+  <p class="methodology-intro">
+    This website presents Afghan migration as a <strong>multi-stage human process</strong>,
+    using curated humanitarian datasets and interactive visualizations.
+  </p>
+
+      <h3>Data sources</h3>
+      <ul>
+        <li>
+          Primary data: <a href="https://data.humdata.org/dataset/hdx-hapi-afg" target="_blank" rel="noopener noreferrer">HDX — HAPI Afghanistan</a>
+        </li>
+        
+      </ul>
+
+      <h3>Data cleaning and imputation</h3>
+      <p>
+        We apply lightweight preprocessing for consistency (numeric parsing, year extraction, and conservative filtering).
+        For transparency, you can download the datasets used by each section and the runnable preprocessing notebooks/scripts.
+      </p>
+
+      <div class="dl-grid">
+        <div class="dl-card">
+          <h4>Overview — Outflow over time</h4>
+          <ul>
+            <li>Dataset: <a href="./dataset/hdx_hapi_refugees_afg.csv" download>hdx_hapi_refugees_afg.csv</a></li>
+            <li>Notebook: <a href="./downloads/jupyter_preprocess_notebooks_v2.zip" download>Notebooks (v2 ZIP)</a></li>
+          </ul>
+        </div>
+
+        <div class="dl-card">
+          <h4>Shocks — Food price YoY changes</h4>
+          <ul>
+            <li>Dataset: <a href="./dataset/hdx_hapi_food_price_afg.csv" download>hdx_hapi_food_price_afg.csv</a></li>
+            <li>Notebook: <a href="./downloads/jupyter_preprocess_notebooks_v2.zip" download>Notebooks (v2 ZIP)</a></li>
+          </ul>
+        </div>
+
+        <div class="dl-card">
+          <h4>IDPs — Latest snapshot by province</h4>
+          <ul>
+            <li>Dataset: <a href="./dataset/hdx_hapi_idps_afg.csv" download>hdx_hapi_idps_afg.csv</a></li>
+            <li>Geo: <a href="./dataset/geo/afghanistan_adm1.geojson" download>afghanistan_adm1.geojson</a></li>
+            <li>Notebook: <a href="./downloads/jupyter_preprocess_notebooks_v2.zip" download>Notebooks (v2 ZIP)</a></li>
+          </ul>
+        </div>
+
+        <div class="dl-card">
+          <h4>Flows — Top destinations (latest year)</h4>
+          <ul>
+            <li>Dataset: <a href="./dataset/hdx_hapi_refugees_afg.csv" download>hdx_hapi_refugees_afg.csv</a></li>
+            <li>Geo: <a href="./dataset/geo/world_countries.topojson" download>world_countries.topojson</a></li>
+            <li>Notebook: <a href="./downloads/jupyter_preprocess_notebooks_v2.zip" download>Notebooks (v2 ZIP)</a></li>
+          </ul>
+        </div>
+
+        <div class="dl-card">
+          <h4>Destinations — Top list + multi-year trend</h4>
+          <ul>
+            <li>Dataset: <a href="./dataset/hdx_hapi_refugees_afg.csv" download>hdx_hapi_refugees_afg.csv</a></li>
+            <li>Notebook: <a href="./downloads/jupyter_preprocess_notebooks_v2.zip" download>Notebooks (v2 ZIP)</a></li>
+          </ul>
+        </div>
+
+        <div class="dl-card">
+          <h4>Protection — REF/ASY + Returnees</h4>
+          <ul>
+            <li>Dataset: <a href="./dataset/hdx_hapi_refugees_afg.csv" download>hdx_hapi_refugees_afg.csv</a></li>
+            <li>Dataset: <a href="./dataset/hdx_hapi_returnees_afg.csv" download>hdx_hapi_returnees_afg.csv</a></li>
+            <li>Notebook: <a href="./downloads/jupyter_preprocess_notebooks_v2.zip" download>Notebooks (v2 ZIP)</a></li>
+          </ul>
+        </div>
+      </div>
+
+      
+
+      <h3>Data processing and analysis</h3>
+
+<p>
+  The analytical pipeline in this project follows a clear and reproducible sequence,
+  transforming raw humanitarian data into interpretable metrics and visual encodings.
+  The goal is not prediction, but the identification of patterns and processes.
+</p>
+
+<ul>
+  <li>
+    <strong>Raw data ingestion:</strong>
+    CSV and GeoJSON files are loaded directly from the <code>dataset/</code> directory
+    using D3.js. These files originate from HDX HAPI and related humanitarian sources.
+  </li>
+
+  <li>
+    <strong>Cleaning and normalization:</strong>
+    Raw values are converted into numeric formats, reporting periods are normalized
+    to annual values, and invalid or non-informative rows are excluded
+    (e.g. missing year, non-positive counts, or inconsistent location codes).
+  </li>
+
+  <li>
+    <strong>Aggregation and metrics:</strong>
+    Cleaned records are aggregated into metrics aligned with the narrative:
+    annual outflow totals, latest-year destination rankings, province-level IDP counts,
+    and year-to-year food price changes.
+  </li>
+
+  <li>
+    <strong>Mapping to visual encodings:</strong>
+    Each metric is mapped to a specific visual form:
+    time-series lines for long-term pressure,
+    histograms for economic shocks,
+    choropleth maps for spatial concentration,
+    and flow diagrams for cross-border movement.
+  </li>
+
+  <li>
+    <strong>Narrative integration:</strong>
+    Metrics are not shown in isolation. They are sequenced into a six-phase narrative
+    (pressure, displacement, routes, destinations, uneven hosting, and unknown paths),
+    guiding the user from contextual evidence to interpretive insight.
+  </li>
+</ul>
+
+
+
+
+      <h3>Limitations and uncertainty</h3>
+
+<ul>
+  <li>
+    <strong>Reporting gaps:</strong>
+    Humanitarian datasets are subject to reporting delays and uneven coverage across regions and years.
+    Some movements may not be captured in official records.
+  </li>
+
+  <li>
+    <strong>Aggregation bias:</strong>
+    Several indicators are aggregated at national or annual levels.
+    This limits fine-grained temporal or local interpretation.
+  </li>
+
+  <li>
+    <strong>Definition variability:</strong>
+    Categories such as refugees, asylum-seekers, and returnees may follow different definitions
+    depending on the reporting source and update cycle.
+  </li>
+
+  <li>
+    <strong>Unknown destinations:</strong>
+    Records without a clear destination are treated explicitly as uncertainty.
+    “Unknown” does not indicate absence of movement, but limitations of data visibility.
+  </li>
+</ul>
+
+
+    </section>
+
+    <footer aria-label="Site footer">
+      <div>
+        <strong>Team:</strong> Somayyeh Eslami — <span class="small">Data storytelling & web development</span>
+      </div>
+      <div>
+        <strong>Data reference:</strong>
+        <a href="https://data.humdata.org/dataset/hdx-hapi-afg" target="_blank" rel="noopener noreferrer">HDX HAPI Afghanistan</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script type="module" src="./js/app.js"></script>
+  <script type="module" src="./js/storywide.js"></script>
+</body>
+</html>
