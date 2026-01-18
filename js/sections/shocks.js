@@ -1,249 +1,349 @@
 // js/sections/shocks.js
+// Ridgeline plot — Food price YoY change distributions by year (interactive)
+// Data file: ./data/processed/food_price_yoy_pct.csv
+// Columns expected: year, pct_change_yoy
+
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 import { markColor } from "../theme.js";
 
-/**
- * Section 2 — Economic Shocks (Histogram + Tooltip)
- * Data: dataset/hdx_hapi_food_price_afg.csv
- *
- * Histogram of YoY% changes per commodity (+ market if exists).
- * Tooltip on bins shows: range (%) and frequency (count).
- */
 export async function update(ctx) {
   const { g, width, height, theme } = ctx;
 
-  const rows = await d3.csv("./dataset/hdx_hapi_food_price_afg.csv");
+  // clear layers
+  g.marks.selectAll("*").remove();
+  g.axes.selectAll("*").remove();
+  g.anno.selectAll("*").remove();
+  g.root.selectAll("*").remove();
+  g.ui.selectAll("*").remove();
 
-  const parseYear = (d) => {
-    if (!d) return null;
-    const s = String(d).trim();
-    if (/^\d{4}/.test(s)) return +s.slice(0, 4);
-    const p = s.split(/[\/\-]/);
-    return p.length === 3 ? +p[2] : null;
-  };
-
-  const toNumber = (x) => {
-    const n = +String(x).replace(/,/g, "").trim();
-    return Number.isFinite(n) ? n : null;
-  };
-
-  const priceCol = rows.length && ("price" in rows[0]) ? "price" : "value";
-  const commodityCol = rows.length && ("commodity" in rows[0]) ? "commodity"
-                    : (rows.length && ("commodity_name" in rows[0]) ? "commodity_name" : null);
-  const marketCol = rows.length && ("market" in rows[0]) ? "market"
-                  : (rows.length && ("market_name" in rows[0]) ? "market_name" : null);
-
-  // Group records into series: commodity + market (if available)
-  const series = new Map();
-
-  for (const r of rows) {
-    const year = parseYear(r.reference_period_start);
-    const price = toNumber(r[priceCol]);
-    if (!year || price === null) continue;
-
-    const commodity = commodityCol ? (r[commodityCol] || "Unknown").trim() : "All";
-    const market = marketCol ? (r[marketCol] || "All").trim() : "All";
-    const key = `${commodity}||${market}`;
-
-    if (!series.has(key)) series.set(key, new Map());
-    const byYear = series.get(key);
-
-    if (!byYear.has(year)) byYear.set(year, []);
-    byYear.get(year).push(price);
-  }
-
-  // Build YoY% samples
-  const pctChanges = [];
-
-  for (const [, byYear] of series) {
-    const yearly = Array.from(byYear, ([year, prices]) => ({
-      year,
-      avg: d3.mean(prices),
-    })).sort((a, b) => a.year - b.year);
-
-    if (yearly.length < 2) continue;
-
-    for (let i = 1; i < yearly.length; i++) {
-      const prev = yearly[i - 1].avg;
-      const cur = yearly[i].avg;
-      if (!Number.isFinite(prev) || !Number.isFinite(cur) || prev <= 0) continue;
-
-      const pct = ((cur - prev) / prev) * 100;
-      if (Number.isFinite(pct)) pctChanges.push(pct);
-    }
-  }
-
-  if (pctChanges.length === 0) {
-    g.marks.append("text")
-      .attr("x", 20)
-      .attr("y", 30)
-      .attr("fill", theme.context)
-      .attr("font-size", 12)
-      .text("Not enough data to compute price changes.");
-    return;
-  }
-
-  // Layout
-  const margin = { top: 20, right: 20, bottom: 44, left: 64 };
-  const w = Math.max(10, width - margin.left - margin.right);
-  const h = Math.max(10, height - margin.top - margin.bottom);
-  const chart = g.root.attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const x = d3.scaleLinear()
-    .domain(d3.extent(pctChanges))
-    .nice()
-    .range([0, w]);
-
-  const bins = d3.bin()
-    .domain(x.domain())
-    .thresholds(18)(pctChanges);
-
-  const y = d3.scaleLinear()
-    .domain([0, d3.max(bins, d => d.length)])
-    .nice()
-    .range([h, 0]);
-
-  // Axes
-  const xAxis = d3.axisBottom(x).ticks(6);
-  const yAxis = d3.axisLeft(y).ticks(6);
-
-  const gx = chart.append("g")
-    .attr("transform", `translate(0,${h})`)
-    .call(xAxis);
-
-  const gy = chart.append("g")
-    .call(yAxis);
-
-  gx.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 11);
-  gy.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 11);
-  gx.selectAll("path,line").attr("stroke", "rgba(148,163,184,.25)");
-  gy.selectAll("path,line").attr("stroke", "rgba(148,163,184,.25)");
-
-  // Labels
-  chart.append("text")
-    .attr("x", 0)
-    .attr("y", -6)
-    .attr("fill", theme.text)
-    .attr("font-size", 12)
-    .attr("font-weight", 600)
-    .text("Distribution of year-to-year food price changes (%)");
-
-
-  chart.append("text")
-    .attr("x", w / 2)
-    .attr("y", h + 36)
-    .attr("fill", theme.context)
-    .attr("font-size", 11)
-    .attr("text-anchor", "middle")
-    .text("Year-to-year change in food prices (%)");
-
-  chart.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -h / 2)
-    .attr("y", -46)
-    .attr("fill", theme.context)
-    .attr("font-size", 11)
-    .attr("text-anchor", "middle")
-    .text("Frequency");
-
-  // Zero line
-  chart.append("line")
-    .attr("x1", x(0))
-    .attr("x2", x(0))
-    .attr("y1", 0)
-    .attr("y2", h)
-    .attr("stroke", "rgba(148,163,184,.35)")
-    .attr("stroke-width", 1)
-    .attr("stroke-dasharray", "4,4");
-
-  // Interpretation note (top-right, no overlap)
-  chart.append("text")
-    .attr("x", w)
-    .attr("y", 12)
-    .attr("fill", theme.context)
-    .attr("font-size", 10)
-    .attr("text-anchor", "end")
-    .text("Right tail = price spikes · Left tail = price drops");
-
-  // ---------- Tooltip (shared) ----------
+  // ---------- tooltip ----------
   let tip = document.getElementById("viz-tooltip");
   if (!tip) {
     tip = document.createElement("div");
     tip.id = "viz-tooltip";
     tip.style.position = "fixed";
-    tip.style.zIndex = "9999";
     tip.style.pointerEvents = "none";
     tip.style.background = "rgba(2,6,23,.92)";
     tip.style.border = "1px solid rgba(148,163,184,.25)";
     tip.style.borderRadius = "10px";
     tip.style.padding = "8px 10px";
     tip.style.color = theme.text;
-    tip.style.fontFamily = "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
     tip.style.fontSize = "12px";
-    tip.style.boxShadow = "0 12px 30px rgba(0,0,0,.55)";
     tip.style.display = "none";
+    tip.style.zIndex = "2147483647";
     document.body.appendChild(tip);
+  } else {
+    tip.style.zIndex = "2147483647";
   }
+
+  const showTip = (event, html) => {
+    tip.innerHTML = html;
+    const pad = 12;
+    tip.style.left = `${Math.min(window.innerWidth - 360, event.clientX + pad)}px`;
+    tip.style.top = `${Math.min(window.innerHeight - 190, event.clientY + pad)}px`;
+    tip.style.display = "block";
+  };
+  const hideTip = () => (tip.style.display = "none");
+
+  // ---------- load data ----------
+  const path = "./data/processed/food_price_yoy_pct.csv";
+  let rows;
+  try {
+    rows = await d3.csv(path, d => ({
+      year: +d.year,
+      value: +d.pct_change_yoy
+    }));
+  } catch {
+    g.marks.append("text")
+      .attr("x", 20).attr("y", 30)
+      .attr("fill", theme.context)
+      .attr("font-size", 12)
+      .text(`Failed to load ${path}`);
+    return;
+  }
+
+  // ---------- group by year ----------
+  const byYear = d3.group(
+    rows.filter(d => Number.isFinite(d.year) && Number.isFinite(d.value)),
+    d => d.year
+  );
+
+  const MIN_N = 10;
+  const yearsAsc = Array.from(byYear.keys())
+    .filter(y => byYear.get(y).length >= MIN_N)
+    .sort((a, b) => a - b);
+
+  if (yearsAsc.length < 2) {
+    g.marks.append("text")
+      .attr("x", 20).attr("y", 30)
+      .attr("fill", theme.context)
+      .attr("font-size", 12)
+      .text("Not enough yearly data for ridgeline plot.");
+    return;
+  }
+
+  // ---------- domain ----------
+  const allValues = yearsAsc.flatMap(y => byYear.get(y).map(d => d.value)).sort((a, b) => a - b);
+  const p01 = d3.quantileSorted(allValues, 0.01);
+  const p99 = d3.quantileSorted(allValues, 0.99);
+  const xMin = p01 ?? d3.min(allValues);
+  const xMax = p99 ?? d3.max(allValues);
+
+  // ---------- KDE ----------
+  const gaussian = u => Math.exp(-0.5 * u * u) / Math.sqrt(2 * Math.PI);
+  const sd = d3.deviation(allValues) || 1;
+  const bw = Math.max(1e-6, 1.06 * sd * Math.pow(allValues.length, -0.2));
+  const xs = d3.ticks(xMin, xMax, 90);
+
+  const yearData = yearsAsc.map(year => {
+    const values = byYear.get(year)
+      .map(d => d.value)
+      .filter(v => v >= xMin && v <= xMax)
+      .sort((a, b) => a - b);
+
+    const dens = xs.map(x => ({
+      x,
+      d: d3.mean(values, v => gaussian((x - v) / bw)) / bw
+    }));
+
+    return {
+      year,
+      n: values.length,
+      q1: d3.quantileSorted(values, 0.25),
+      med: d3.quantileSorted(values, 0.5),
+      q3: d3.quantileSorted(values, 0.75),
+      dens,
+      maxD: d3.max(dens, d => d.d) || 1
+    };
+  });
+
+  const maxDensity = d3.max(yearData, d => d.maxD) || 1;
+
+  // ---------- layout ----------
+  const margin = { top: 108, right: 18, bottom: 44, left: 64 };
+  const W = Math.max(10, width - margin.left - margin.right);
+  const H = Math.max(10, height - margin.top - margin.bottom);
+
+  const C_FILL = markColor("context");
+  const C_STROKE = markColor("shock");
+  const C_MED = markColor("pressure");
+  const C_IQR = "rgba(148,163,184,.12)";
+
+  // ---------- header ----------
+  g.ui.attr("transform", `translate(${margin.left},${22})`);
+
+  const title = g.ui.append("text")
+    .attr("x", 0).attr("y", 0)
+    .attr("fill", theme.text)
+    .attr("font-size", 13)
+    .attr("font-weight", 800)
+    .text("Economic shocks appear as wider and skewed food-price distributions");
+
+  wrapSvgText(title, Math.max(120, W - 10), 1.2);
+
+  g.ui.append("text")
+    .attr("x", 0).attr("y", 32)
+    .attr("fill", theme.mutedText)
+    .attr("font-size", 10)
+    .text("Ridgeline plot · Hover to inspect each year · Median + IQR shown");
+
+  g.ui.append("text")
+    .attr("x", W).attr("y", 32)
+    .attr("text-anchor", "end")
+    .attr("fill", theme.mutedText)
+    .attr("font-size", 10)
+    .text(`KDE bandwidth: ${d3.format(".2f")(bw)}`);
+
+  // ---------- legend (header) ----------
+  const leg = g.ui.append("g").attr("transform", "translate(0,54)");
+  const items = [
+    { label: "Distribution", kind: "area" },
+    { label: "Median", kind: "line" },
+    { label: "IQR", kind: "rect" },
+  ];
+
+  const xStep = 150;
+  const itemG = leg.selectAll("g.item")
+    .data(items)
+    .enter()
+    .append("g")
+    .attr("transform", (d, i) => `translate(${i * xStep},0)`);
+
+  itemG.each(function(d) {
+    const gg = d3.select(this);
+    if (d.kind === "area") {
+      gg.append("rect")
+        .attr("width", 14).attr("height", 10).attr("rx", 2)
+        .attr("fill", C_FILL).attr("opacity", 0.35)
+        .attr("stroke", C_STROKE).attr("stroke-width", 1.4);
+    }
+    if (d.kind === "line") {
+      gg.append("line")
+        .attr("x1", 0).attr("x2", 14)
+        .attr("y1", 5).attr("y2", 5)
+        .attr("stroke", C_MED).attr("stroke-width", 2);
+    }
+    if (d.kind === "rect") {
+      gg.append("rect")
+        .attr("width", 14).attr("height", 10).attr("rx", 2)
+        .attr("fill", C_IQR).attr("stroke", "rgba(148,163,184,.18)");
+    }
+    gg.append("text")
+      .attr("x", 20).attr("y", 9)
+      .attr("fill", theme.mutedText)
+      .attr("font-size", 10)
+      .text(d.label);
+  });
+
+  // ---------- main plot ----------
+  const root = g.root.attr("transform", `translate(${margin.left},${margin.top})`);
+  const x = d3.scaleLinear().domain([xMin, xMax]).range([0, W]);
+  const yearsDesc = yearsAsc.slice().sort((a, b) => b - a);
+
+  const yBand = d3.scaleBand()
+    .domain(yearsDesc)
+    .range([0, H])
+    .paddingInner(0.22);
+
+  const amp = Math.min(36, yBand.bandwidth() * 0.9);
+  const dScale = d3.scaleLinear().domain([0, maxDensity]).range([0, amp]);
+
+  // axes
+  g.axes.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top + H})`)
+    .call(d3.axisBottom(x).ticks(6).tickFormat(d => `${d3.format(".0f")(d)}%`))
+    .call(s => s.selectAll("path,line").attr("stroke", "rgba(148,163,184,.22)"))
+    .call(s => s.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
+
+  g.axes.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`)
+    .call(d3.axisLeft(yBand).tickSize(0))
+    .call(s => s.selectAll("path").remove())
+    .call(s => s.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
+
+  // grid
+  root.append("g")
+    .attr("opacity", 0.14)
+    .call(d3.axisBottom(x).ticks(6).tickSize(-H).tickFormat(""))
+    .call(s => s.selectAll("path").remove())
+    .call(s => s.selectAll("line").attr("stroke", "rgba(148,163,184,.22)"))
+    .attr("transform", `translate(0,${H})`);
+
+  // ridgelines
+  const area = d3.area()
+    .x(d => x(d.x))
+    .y0(0)
+    .y1(d => -dScale(d.d))
+    .curve(d3.curveCatmullRom.alpha(0.85));
+
+  const ridgeG = root.append("g");
+
+  const row = ridgeG.selectAll("g.ridge")
+    .data(yearData.slice().sort((a, b) => b.year - a.year))
+    .enter()
+    .append("g")
+    .attr("transform", d =>
+      `translate(0,${(yBand(d.year) ?? 0) + yBand.bandwidth() * 0.85})`
+    );
+
+  row.append("line")
+    .attr("x2", W)
+    .attr("stroke", "rgba(148,163,184,.12)");
+
+  row.append("path")
+    .attr("d", d => area(d.dens))
+    .attr("fill", C_FILL)
+    .attr("opacity", 0.22)
+    .attr("stroke", C_STROKE)
+    .attr("stroke-width", 1.6);
+
+  row.append("rect")
+    .attr("x", d => x(d.q1))
+    .attr("y", -10)
+    .attr("width", d => Math.max(1, x(d.q3) - x(d.q1)))
+    .attr("height", 10)
+    .attr("rx", 5)
+    .attr("fill", C_IQR)
+    .attr("stroke", "rgba(148,163,184,.18)");
+
+  row.append("line")
+    .attr("x1", d => x(d.med))
+    .attr("x2", d => x(d.med))
+    .attr("y2", -14)
+    .attr("stroke", C_MED)
+    .attr("stroke-width", 2);
+
+  // ---------- interaction ----------
+  const guide = root.append("line")
+    .attr("y1", 0).attr("y2", H)
+    .attr("stroke", "rgba(251,191,36,.35)")
+    .attr("opacity", 0);
 
   const fmt1 = d3.format(".1f");
+  const fmt0 = d3.format(",d");
 
-  function showTip(event, bin) {
-    const x0 = fmt1(bin.x0);
-    const x1 = fmt1(bin.x1);
-    const n = bin.length;
-
-    tip.innerHTML = `
-  <div style="font-weight:600; margin-bottom:2px;">
-    Price change compared to the previous year
-  </div>
-  <div style="color:${theme.mutedText};">
-    ${x0}% to ${x1}%
-  </div>
-  <div style="margin-top:6px;">
-    <span style="color:${theme.mutedText};">Number of observations:</span> ${n}
-  </div>
-`;
-
-
-    const pad = 12;
-    const tx = Math.min(window.innerWidth - 220, event.clientX + pad);
-    const ty = Math.min(window.innerHeight - 90, event.clientY + pad);
-    tip.style.left = `${tx}px`;
-    tip.style.top = `${ty}px`;
-    tip.style.display = "block";
-  }
-
-  function hideTip() {
-    tip.style.display = "none";
-  }
-
-  // Bars (with tooltip)
-  chart.selectAll(".bar")
-    .data(bins)
-    .enter()
-    .append("rect")
-    .attr("class", "bar")
-    .attr("x", d => x(d.x0) + 1)
-    .attr("y", d => y(d.length))
-    .attr("width", d => Math.max(0, x(d.x1) - x(d.x0) - 2))
-    .attr("height", d => h - y(d.length))
-    .attr("fill", markColor("context"))
-    .attr("opacity", 0.35)
-    .attr("stroke", markColor("shock"))
-    .attr("stroke-width", 1.5)
-    .on("mouseenter", function (event, d) {
-      // emphasize hovered bar (still within palette)
-      d3.select(this)
-        .attr("opacity", 0.55)
-        .attr("stroke-width", 2.2);
-      showTip(event, d);
-    })
-    .on("mousemove", function (event, d) {
-      showTip(event, d);
-    })
-    .on("mouseleave", function () {
-      d3.select(this)
-        .attr("opacity", 0.35)
-        .attr("stroke-width", 1.5);
+  const overlay = root.append("rect")
+    .attr("width", W).attr("height", H)
+    .attr("fill", "transparent")
+    .style("cursor", "crosshair")
+    .on("mouseenter", () => guide.attr("opacity", 1))
+    .on("mouseleave", () => {
+      guide.attr("opacity", 0);
       hideTip();
+    })
+    .on("mousemove", (event) => {
+      const [mx, my] = d3.pointer(event, overlay.node());
+      guide.attr("x1", mx).attr("x2", mx);
+
+      let nearest = yearsDesc[0];
+      let best = Infinity;
+      for (const yr of yearsDesc) {
+        const y0 = yBand(yr);
+        const c = y0 + yBand.bandwidth() * 0.5;
+        const d = Math.abs(c - my);
+        if (d < best) { best = d; nearest = yr; }
+      }
+
+      const yd = yearData.find(d => d.year === nearest);
+      if (!yd) return;
+
+      showTip(event, `
+        <div style="font-weight:700;">Year: ${nearest}</div>
+        <div style="color:${theme.mutedText};">YoY (cursor): ${fmt1(x.invert(mx))}%</div>
+        <div style="color:${theme.mutedText}; margin-top:6px;">N: ${fmt0(yd.n)}</div>
+        <div style="color:${theme.mutedText};">Median: ${fmt1(yd.med)}%</div>
+        <div style="color:${theme.mutedText};">IQR: [${fmt1(yd.q1)}%, ${fmt1(yd.q3)}%]</div>
+      `);
     });
+
+  overlay.raise();
+
+  // ---------- helpers ----------
+  function wrapSvgText(textSel, maxWidth, lineHeight) {
+    textSel.each(function () {
+      const text = d3.select(this);
+      const words = text.text().split(/\s+/).filter(Boolean);
+      let line = [];
+      let lineNumber = 0;
+      const x = text.attr("x");
+      const y = text.attr("y");
+      text.text(null);
+      let tspan = text.append("tspan").attr("x", x).attr("y", y);
+      for (const w of words) {
+        line.push(w);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > maxWidth && line.length > 1) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [w];
+          lineNumber += 1;
+          tspan = text.append("tspan")
+            .attr("x", x)
+            .attr("y", y)
+            .attr("dy", `${lineNumber * lineHeight}em`)
+            .text(w);
+        }
+      }
+    });
+  }
 }

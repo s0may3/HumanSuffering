@@ -39,11 +39,11 @@ function setLegend(mode) {
   // IMPORTANT: protection uses its own internal legend (REF/ASY/RET), so global legend must be OFF there.
   const visibleKeysByMode = {
     overview: [],
-    shocks: ["shock", "context"],
+    shocks: [],
     idps: ["pressure", "context"],
     routes: ["route", "destination"],
-    destinations: ["destination", "route"], // ✅ show both in section 5
-    protection: [], // ✅ turn OFF global legend in section 6
+    destinations: ["destination", "route", "pressure"],
+    protection: [], //  turn OFF global legend in section 6
   };
 
   const visibleKeys = visibleKeysByMode[mode] || [];

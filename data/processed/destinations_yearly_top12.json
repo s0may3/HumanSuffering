@@ -1,0 +1,1495 @@
+{
+  "latest_year": 2024,
+  "top12": [
+    {
+      "iso3": "IRN",
+      "population_num": 10431246
+    },
+    {
+      "iso3": "PAK",
+      "population_num": 5214072
+    },
+    {
+      "iso3": "DEU",
+      "population_num": 972269
+    },
+    {
+      "iso3": "FRA",
+      "population_num": 195454
+    },
+    {
+      "iso3": "AUT",
+      "population_num": 147016
+    },
+    {
+      "iso3": "GBR",
+      "population_num": 113971
+    },
+    {
+      "iso3": "GRC",
+      "population_num": 87720
+    },
+    {
+      "iso3": "TUR",
+      "population_num": 83629
+    },
+    {
+      "iso3": "SWE",
+      "population_num": 74805
+    },
+    {
+      "iso3": "CHE",
+      "population_num": 62641
+    },
+    {
+      "iso3": "ITA",
+      "population_num": 62637
+    },
+    {
+      "iso3": "USA",
+      "population_num": 57034
+    }
+  ],
+  "series": [
+    {
+      "year": 2001,
+      "iso3": "AUT",
+      "people": 1049
+    },
+    {
+      "year": 2002,
+      "iso3": "AUT",
+      "people": 1270
+    },
+    {
+      "year": 2003,
+      "iso3": "AUT",
+      "people": 1595
+    },
+    {
+      "year": 2004,
+      "iso3": "AUT",
+      "people": 2482
+    },
+    {
+      "year": 2005,
+      "iso3": "AUT",
+      "people": 2991
+    },
+    {
+      "year": 2006,
+      "iso3": "AUT",
+      "people": 5239
+    },
+    {
+      "year": 2007,
+      "iso3": "AUT",
+      "people": 5735
+    },
+    {
+      "year": 2008,
+      "iso3": "AUT",
+      "people": 7403
+    },
+    {
+      "year": 2009,
+      "iso3": "AUT",
+      "people": 9209
+    },
+    {
+      "year": 2010,
+      "iso3": "AUT",
+      "people": 10055
+    },
+    {
+      "year": 2011,
+      "iso3": "AUT",
+      "people": 13212
+    },
+    {
+      "year": 2012,
+      "iso3": "AUT",
+      "people": 16361
+    },
+    {
+      "year": 2013,
+      "iso3": "AUT",
+      "people": 18154
+    },
+    {
+      "year": 2014,
+      "iso3": "AUT",
+      "people": 14793
+    },
+    {
+      "year": 2015,
+      "iso3": "AUT",
+      "people": 41725
+    },
+    {
+      "year": 2016,
+      "iso3": "AUT",
+      "people": 50003
+    },
+    {
+      "year": 2017,
+      "iso3": "AUT",
+      "people": 51172
+    },
+    {
+      "year": 2018,
+      "iso3": "AUT",
+      "people": 49196
+    },
+    {
+      "year": 2019,
+      "iso3": "AUT",
+      "people": 57928
+    },
+    {
+      "year": 2020,
+      "iso3": "AUT",
+      "people": 53042
+    },
+    {
+      "year": 2021,
+      "iso3": "AUT",
+      "people": 53885
+    },
+    {
+      "year": 2022,
+      "iso3": "AUT",
+      "people": 60120
+    },
+    {
+      "year": 2023,
+      "iso3": "AUT",
+      "people": 133814
+    },
+    {
+      "year": 2024,
+      "iso3": "AUT",
+      "people": 147016
+    },
+    {
+      "year": 2001,
+      "iso3": "CHE",
+      "people": 5027
+    },
+    {
+      "year": 2002,
+      "iso3": "CHE",
+      "people": 4403
+    },
+    {
+      "year": 2003,
+      "iso3": "CHE",
+      "people": 2764
+    },
+    {
+      "year": 2004,
+      "iso3": "CHE",
+      "people": 4191
+    },
+    {
+      "year": 2005,
+      "iso3": "CHE",
+      "people": 4041
+    },
+    {
+      "year": 2006,
+      "iso3": "CHE",
+      "people": 3641
+    },
+    {
+      "year": 2007,
+      "iso3": "CHE",
+      "people": 4741
+    },
+    {
+      "year": 2008,
+      "iso3": "CHE",
+      "people": 5763
+    },
+    {
+      "year": 2009,
+      "iso3": "CHE",
+      "people": 6876
+    },
+    {
+      "year": 2010,
+      "iso3": "CHE",
+      "people": 7804
+    },
+    {
+      "year": 2011,
+      "iso3": "CHE",
+      "people": 9777
+    },
+    {
+      "year": 2012,
+      "iso3": "CHE",
+      "people": 12282
+    },
+    {
+      "year": 2013,
+      "iso3": "CHE",
+      "people": 13436
+    },
+    {
+      "year": 2014,
+      "iso3": "CHE",
+      "people": 13977
+    },
+    {
+      "year": 2015,
+      "iso3": "CHE",
+      "people": 34606
+    },
+    {
+      "year": 2016,
+      "iso3": "CHE",
+      "people": 39091
+    },
+    {
+      "year": 2017,
+      "iso3": "CHE",
+      "people": 39730
+    },
+    {
+      "year": 2018,
+      "iso3": "CHE",
+      "people": 39996
+    },
+    {
+      "year": 2019,
+      "iso3": "CHE",
+      "people": 38607
+    },
+    {
+      "year": 2020,
+      "iso3": "CHE",
+      "people": 40225
+    },
+    {
+      "year": 2021,
+      "iso3": "CHE",
+      "people": 42488
+    },
+    {
+      "year": 2022,
+      "iso3": "CHE",
+      "people": 53202
+    },
+    {
+      "year": 2023,
+      "iso3": "CHE",
+      "people": 63876
+    },
+    {
+      "year": 2024,
+      "iso3": "CHE",
+      "people": 62641
+    },
+    {
+      "year": 2001,
+      "iso3": "DEU",
+      "people": 10057
+    },
+    {
+      "year": 2002,
+      "iso3": "DEU",
+      "people": 64363
+    },
+    {
+      "year": 2003,
+      "iso3": "DEU",
+      "people": 49504
+    },
+    {
+      "year": 2004,
+      "iso3": "DEU",
+      "people": 39081
+    },
+    {
+      "year": 2005,
+      "iso3": "DEU",
+      "people": 36136
+    },
+    {
+      "year": 2006,
+      "iso3": "DEU",
+      "people": 25878
+    },
+    {
+      "year": 2007,
+      "iso3": "DEU",
+      "people": 26459
+    },
+    {
+      "year": 2008,
+      "iso3": "DEU",
+      "people": 26837
+    },
+    {
+      "year": 2009,
+      "iso3": "DEU",
+      "people": 102633
+    },
+    {
+      "year": 2010,
+      "iso3": "DEU",
+      "people": 112284
+    },
+    {
+      "year": 2011,
+      "iso3": "DEU",
+      "people": 124536
+    },
+    {
+      "year": 2012,
+      "iso3": "DEU",
+      "people": 138309
+    },
+    {
+      "year": 2013,
+      "iso3": "DEU",
+      "people": 121053
+    },
+    {
+      "year": 2014,
+      "iso3": "DEU",
+      "people": 140511
+    },
+    {
+      "year": 2015,
+      "iso3": "DEU",
+      "people": 217884
+    },
+    {
+      "year": 2016,
+      "iso3": "DEU",
+      "people": 518442
+    },
+    {
+      "year": 2017,
+      "iso3": "DEU",
+      "people": 575118
+    },
+    {
+      "year": 2018,
+      "iso3": "DEU",
+      "people": 575568
+    },
+    {
+      "year": 2019,
+      "iso3": "DEU",
+      "people": 563127
+    },
+    {
+      "year": 2020,
+      "iso3": "DEU",
+      "people": 543016
+    },
+    {
+      "year": 2021,
+      "iso3": "DEU",
+      "people": 608458
+    },
+    {
+      "year": 2022,
+      "iso3": "DEU",
+      "people": 646477
+    },
+    {
+      "year": 2023,
+      "iso3": "DEU",
+      "people": 898852
+    },
+    {
+      "year": 2024,
+      "iso3": "DEU",
+      "people": 972269
+    },
+    {
+      "year": 2001,
+      "iso3": "FRA",
+      "people": 2568
+    },
+    {
+      "year": 2002,
+      "iso3": "FRA",
+      "people": 2512
+    },
+    {
+      "year": 2003,
+      "iso3": "FRA",
+      "people": 2334
+    },
+    {
+      "year": 2004,
+      "iso3": "FRA",
+      "people": 1220
+    },
+    {
+      "year": 2005,
+      "iso3": "FRA",
+      "people": 2456
+    },
+    {
+      "year": 2006,
+      "iso3": "FRA",
+      "people": 2476
+    },
+    {
+      "year": 2007,
+      "iso3": "FRA",
+      "people": 2546
+    },
+    {
+      "year": 2008,
+      "iso3": "FRA",
+      "people": 2690
+    },
+    {
+      "year": 2009,
+      "iso3": "FRA",
+      "people": 1567
+    },
+    {
+      "year": 2010,
+      "iso3": "FRA",
+      "people": 3580
+    },
+    {
+      "year": 2011,
+      "iso3": "FRA",
+      "people": 4240
+    },
+    {
+      "year": 2012,
+      "iso3": "FRA",
+      "people": 5775
+    },
+    {
+      "year": 2013,
+      "iso3": "FRA",
+      "people": 7027
+    },
+    {
+      "year": 2014,
+      "iso3": "FRA",
+      "people": 8100
+    },
+    {
+      "year": 2015,
+      "iso3": "FRA",
+      "people": 10904
+    },
+    {
+      "year": 2016,
+      "iso3": "FRA",
+      "people": 19550
+    },
+    {
+      "year": 2017,
+      "iso3": "FRA",
+      "people": 31164
+    },
+    {
+      "year": 2018,
+      "iso3": "FRA",
+      "people": 45153
+    },
+    {
+      "year": 2019,
+      "iso3": "FRA",
+      "people": 59641
+    },
+    {
+      "year": 2020,
+      "iso3": "FRA",
+      "people": 58666
+    },
+    {
+      "year": 2021,
+      "iso3": "FRA",
+      "people": 59484
+    },
+    {
+      "year": 2022,
+      "iso3": "FRA",
+      "people": 138142
+    },
+    {
+      "year": 2023,
+      "iso3": "FRA",
+      "people": 171689
+    },
+    {
+      "year": 2024,
+      "iso3": "FRA",
+      "people": 195454
+    },
+    {
+      "year": 2001,
+      "iso3": "GBR",
+      "people": 15065
+    },
+    {
+      "year": 2002,
+      "iso3": "GBR",
+      "people": 20305
+    },
+    {
+      "year": 2003,
+      "iso3": "GBR",
+      "people": 21718
+    },
+    {
+      "year": 2004,
+      "iso3": "GBR",
+      "people": 22494
+    },
+    {
+      "year": 2005,
+      "iso3": "GBR",
+      "people": 22532
+    },
+    {
+      "year": 2006,
+      "iso3": "GBR",
+      "people": 23069
+    },
+    {
+      "year": 2007,
+      "iso3": "GBR",
+      "people": 23565
+    },
+    {
+      "year": 2008,
+      "iso3": "GBR",
+      "people": 23079
+    },
+    {
+      "year": 2009,
+      "iso3": "GBR",
+      "people": 23658
+    },
+    {
+      "year": 2010,
+      "iso3": "GBR",
+      "people": 23406
+    },
+    {
+      "year": 2011,
+      "iso3": "GBR",
+      "people": 15826
+    },
+    {
+      "year": 2012,
+      "iso3": "GBR",
+      "people": 11107
+    },
+    {
+      "year": 2013,
+      "iso3": "GBR",
+      "people": 10596
+    },
+    {
+      "year": 2014,
+      "iso3": "GBR",
+      "people": 10948
+    },
+    {
+      "year": 2015,
+      "iso3": "GBR",
+      "people": 11890
+    },
+    {
+      "year": 2016,
+      "iso3": "GBR",
+      "people": 12545
+    },
+    {
+      "year": 2017,
+      "iso3": "GBR",
+      "people": 12205
+    },
+    {
+      "year": 2018,
+      "iso3": "GBR",
+      "people": 12277
+    },
+    {
+      "year": 2019,
+      "iso3": "GBR",
+      "people": 15293
+    },
+    {
+      "year": 2020,
+      "iso3": "GBR",
+      "people": 15805
+    },
+    {
+      "year": 2021,
+      "iso3": "GBR",
+      "people": 14585
+    },
+    {
+      "year": 2022,
+      "iso3": "GBR",
+      "people": 24321
+    },
+    {
+      "year": 2023,
+      "iso3": "GBR",
+      "people": 147901
+    },
+    {
+      "year": 2024,
+      "iso3": "GBR",
+      "people": 113971
+    },
+    {
+      "year": 2001,
+      "iso3": "GRC",
+      "people": 1751
+    },
+    {
+      "year": 2002,
+      "iso3": "GRC",
+      "people": 1284
+    },
+    {
+      "year": 2003,
+      "iso3": "GRC",
+      "people": 1479
+    },
+    {
+      "year": 2004,
+      "iso3": "GRC",
+      "people": 1790
+    },
+    {
+      "year": 2005,
+      "iso3": "GRC",
+      "people": 1858
+    },
+    {
+      "year": 2006,
+      "iso3": "GRC",
+      "people": 1665
+    },
+    {
+      "year": 2007,
+      "iso3": "GRC",
+      "people": 1235
+    },
+    {
+      "year": 2008,
+      "iso3": "GRC",
+      "people": 1700
+    },
+    {
+      "year": 2009,
+      "iso3": "GRC",
+      "people": 148
+    },
+    {
+      "year": 2010,
+      "iso3": "GRC",
+      "people": 4648
+    },
+    {
+      "year": 2011,
+      "iso3": "GRC",
+      "people": 208
+    },
+    {
+      "year": 2012,
+      "iso3": "GRC",
+      "people": 343
+    },
+    {
+      "year": 2013,
+      "iso3": "GRC",
+      "people": 4025
+    },
+    {
+      "year": 2014,
+      "iso3": "GRC",
+      "people": 2225
+    },
+    {
+      "year": 2015,
+      "iso3": "GRC",
+      "people": 5810
+    },
+    {
+      "year": 2016,
+      "iso3": "GRC",
+      "people": 15657
+    },
+    {
+      "year": 2017,
+      "iso3": "GRC",
+      "people": 11673
+    },
+    {
+      "year": 2018,
+      "iso3": "GRC",
+      "people": 22824
+    },
+    {
+      "year": 2019,
+      "iso3": "GRC",
+      "people": 72901
+    },
+    {
+      "year": 2020,
+      "iso3": "GRC",
+      "people": 60868
+    },
+    {
+      "year": 2021,
+      "iso3": "GRC",
+      "people": 46827
+    },
+    {
+      "year": 2022,
+      "iso3": "GRC",
+      "people": 41025
+    },
+    {
+      "year": 2023,
+      "iso3": "GRC",
+      "people": 134197
+    },
+    {
+      "year": 2024,
+      "iso3": "GRC",
+      "people": 87720
+    },
+    {
+      "year": 2001,
+      "iso3": "IRN",
+      "people": 4446000
+    },
+    {
+      "year": 2002,
+      "iso3": "IRN",
+      "people": 1104909
+    },
+    {
+      "year": 2003,
+      "iso3": "IRN",
+      "people": 2493221
+    },
+    {
+      "year": 2004,
+      "iso3": "IRN",
+      "people": 2858478
+    },
+    {
+      "year": 2005,
+      "iso3": "IRN",
+      "people": 2760912
+    },
+    {
+      "year": 2006,
+      "iso3": "IRN",
+      "people": 2744358
+    },
+    {
+      "year": 2007,
+      "iso3": "IRN",
+      "people": 1814076
+    },
+    {
+      "year": 2008,
+      "iso3": "IRN",
+      "people": 2811510
+    },
+    {
+      "year": 2009,
+      "iso3": "IRN",
+      "people": 3072636
+    },
+    {
+      "year": 2010,
+      "iso3": "IRN",
+      "people": 1032494
+    },
+    {
+      "year": 2011,
+      "iso3": "IRN",
+      "people": 841714
+    },
+    {
+      "year": 2012,
+      "iso3": "IRN",
+      "people": 880652
+    },
+    {
+      "year": 2013,
+      "iso3": "IRN",
+      "people": 869888
+    },
+    {
+      "year": 2014,
+      "iso3": "IRN",
+      "people": 1008475
+    },
+    {
+      "year": 2015,
+      "iso3": "IRN",
+      "people": 1007165
+    },
+    {
+      "year": 2016,
+      "iso3": "IRN",
+      "people": 1007087
+    },
+    {
+      "year": 2017,
+      "iso3": "IRN",
+      "people": 1007102
+    },
+    {
+      "year": 2018,
+      "iso3": "IRN",
+      "people": 1008914
+    },
+    {
+      "year": 2019,
+      "iso3": "IRN",
+      "people": 951142
+    },
+    {
+      "year": 2020,
+      "iso3": "IRN",
+      "people": 780000
+    },
+    {
+      "year": 2021,
+      "iso3": "IRN",
+      "people": 2334162
+    },
+    {
+      "year": 2022,
+      "iso3": "IRN",
+      "people": 10239747
+    },
+    {
+      "year": 2023,
+      "iso3": "IRN",
+      "people": 11256951
+    },
+    {
+      "year": 2024,
+      "iso3": "IRN",
+      "people": 10431246
+    },
+    {
+      "year": 2001,
+      "iso3": "ITA",
+      "people": 149
+    },
+    {
+      "year": 2002,
+      "iso3": "ITA",
+      "people": 183
+    },
+    {
+      "year": 2003,
+      "iso3": "ITA",
+      "people": 186
+    },
+    {
+      "year": 2004,
+      "iso3": "ITA",
+      "people": 242
+    },
+    {
+      "year": 2005,
+      "iso3": "ITA",
+      "people": 302
+    },
+    {
+      "year": 2006,
+      "iso3": "ITA",
+      "people": 473
+    },
+    {
+      "year": 2007,
+      "iso3": "ITA",
+      "people": 1138
+    },
+    {
+      "year": 2008,
+      "iso3": "ITA",
+      "people": 2315
+    },
+    {
+      "year": 2009,
+      "iso3": "ITA",
+      "people": 3039
+    },
+    {
+      "year": 2010,
+      "iso3": "ITA",
+      "people": 4273
+    },
+    {
+      "year": 2011,
+      "iso3": "ITA",
+      "people": 4291
+    },
+    {
+      "year": 2012,
+      "iso3": "ITA",
+      "people": 6220
+    },
+    {
+      "year": 2013,
+      "iso3": "ITA",
+      "people": 7681
+    },
+    {
+      "year": 2014,
+      "iso3": "ITA",
+      "people": 10769
+    },
+    {
+      "year": 2015,
+      "iso3": "ITA",
+      "people": 14893
+    },
+    {
+      "year": 2016,
+      "iso3": "ITA",
+      "people": 17959
+    },
+    {
+      "year": 2017,
+      "iso3": "ITA",
+      "people": 17493
+    },
+    {
+      "year": 2018,
+      "iso3": "ITA",
+      "people": 17766
+    },
+    {
+      "year": 2019,
+      "iso3": "ITA",
+      "people": 18689
+    },
+    {
+      "year": 2020,
+      "iso3": "ITA",
+      "people": 13435
+    },
+    {
+      "year": 2021,
+      "iso3": "ITA",
+      "people": 20311
+    },
+    {
+      "year": 2022,
+      "iso3": "ITA",
+      "people": 22203
+    },
+    {
+      "year": 2023,
+      "iso3": "ITA",
+      "people": 21153
+    },
+    {
+      "year": 2024,
+      "iso3": "ITA",
+      "people": 62637
+    },
+    {
+      "year": 2001,
+      "iso3": "PAK",
+      "people": 5215889
+    },
+    {
+      "year": 2002,
+      "iso3": "PAK",
+      "people": 3679707
+    },
+    {
+      "year": 2003,
+      "iso3": "PAK",
+      "people": 3383700
+    },
+    {
+      "year": 2004,
+      "iso3": "PAK",
+      "people": 3217654
+    },
+    {
+      "year": 2005,
+      "iso3": "PAK",
+      "people": 2171181
+    },
+    {
+      "year": 2006,
+      "iso3": "PAK",
+      "people": 2094241
+    },
+    {
+      "year": 2007,
+      "iso3": "PAK",
+      "people": 3810266
+    },
+    {
+      "year": 2008,
+      "iso3": "PAK",
+      "people": 3317625
+    },
+    {
+      "year": 2009,
+      "iso3": "PAK",
+      "people": 3263734
+    },
+    {
+      "year": 2010,
+      "iso3": "PAK",
+      "people": 5705364
+    },
+    {
+      "year": 2011,
+      "iso3": "PAK",
+      "people": 5110464
+    },
+    {
+      "year": 2012,
+      "iso3": "PAK",
+      "people": 4922880
+    },
+    {
+      "year": 2013,
+      "iso3": "PAK",
+      "people": 4863597
+    },
+    {
+      "year": 2014,
+      "iso3": "PAK",
+      "people": 4531116
+    },
+    {
+      "year": 2015,
+      "iso3": "PAK",
+      "people": 4700850
+    },
+    {
+      "year": 2016,
+      "iso3": "PAK",
+      "people": 4069821
+    },
+    {
+      "year": 2017,
+      "iso3": "PAK",
+      "people": 4187553
+    },
+    {
+      "year": 2018,
+      "iso3": "PAK",
+      "people": 4225599
+    },
+    {
+      "year": 2019,
+      "iso3": "PAK",
+      "people": 4282470
+    },
+    {
+      "year": 2020,
+      "iso3": "PAK",
+      "people": 4344300
+    },
+    {
+      "year": 2021,
+      "iso3": "PAK",
+      "people": 4403424
+    },
+    {
+      "year": 2022,
+      "iso3": "PAK",
+      "people": 5058009
+    },
+    {
+      "year": 2023,
+      "iso3": "PAK",
+      "people": 5674578
+    },
+    {
+      "year": 2024,
+      "iso3": "PAK",
+      "people": 5214072
+    },
+    {
+      "year": 2001,
+      "iso3": "SWE",
+      "people": 2732
+    },
+    {
+      "year": 2002,
+      "iso3": "SWE",
+      "people": 3713
+    },
+    {
+      "year": 2003,
+      "iso3": "SWE",
+      "people": 4302
+    },
+    {
+      "year": 2004,
+      "iso3": "SWE",
+      "people": 5075
+    },
+    {
+      "year": 2005,
+      "iso3": "SWE",
+      "people": 4963
+    },
+    {
+      "year": 2006,
+      "iso3": "SWE",
+      "people": 4869
+    },
+    {
+      "year": 2007,
+      "iso3": "SWE",
+      "people": 3235
+    },
+    {
+      "year": 2008,
+      "iso3": "SWE",
+      "people": 3550
+    },
+    {
+      "year": 2009,
+      "iso3": "SWE",
+      "people": 4698
+    },
+    {
+      "year": 2010,
+      "iso3": "SWE",
+      "people": 5858
+    },
+    {
+      "year": 2011,
+      "iso3": "SWE",
+      "people": 8824
+    },
+    {
+      "year": 2012,
+      "iso3": "SWE",
+      "people": 10807
+    },
+    {
+      "year": 2013,
+      "iso3": "SWE",
+      "people": 12197
+    },
+    {
+      "year": 2014,
+      "iso3": "SWE",
+      "people": 14353
+    },
+    {
+      "year": 2015,
+      "iso3": "SWE",
+      "people": 53678
+    },
+    {
+      "year": 2016,
+      "iso3": "SWE",
+      "people": 50775
+    },
+    {
+      "year": 2017,
+      "iso3": "SWE",
+      "people": 43457
+    },
+    {
+      "year": 2018,
+      "iso3": "SWE",
+      "people": 36818
+    },
+    {
+      "year": 2019,
+      "iso3": "SWE",
+      "people": 36576
+    },
+    {
+      "year": 2020,
+      "iso3": "SWE",
+      "people": 32643
+    },
+    {
+      "year": 2021,
+      "iso3": "SWE",
+      "people": 31210
+    },
+    {
+      "year": 2022,
+      "iso3": "SWE",
+      "people": 30301
+    },
+    {
+      "year": 2023,
+      "iso3": "SWE",
+      "people": 69219
+    },
+    {
+      "year": 2024,
+      "iso3": "SWE",
+      "people": 74805
+    },
+    {
+      "year": 2001,
+      "iso3": "TUR",
+      "people": 1239
+    },
+    {
+      "year": 2002,
+      "iso3": "TUR",
+      "people": 389
+    },
+    {
+      "year": 2003,
+      "iso3": "TUR",
+      "people": 381
+    },
+    {
+      "year": 2004,
+      "iso3": "TUR",
+      "people": 1182
+    },
+    {
+      "year": 2005,
+      "iso3": "TUR",
+      "people": 996
+    },
+    {
+      "year": 2006,
+      "iso3": "TUR",
+      "people": 1239
+    },
+    {
+      "year": 2007,
+      "iso3": "TUR",
+      "people": 2739
+    },
+    {
+      "year": 2008,
+      "iso3": "TUR",
+      "people": 9475
+    },
+    {
+      "year": 2009,
+      "iso3": "TUR",
+      "people": 8808
+    },
+    {
+      "year": 2010,
+      "iso3": "TUR",
+      "people": 10341
+    },
+    {
+      "year": 2011,
+      "iso3": "TUR",
+      "people": 15231
+    },
+    {
+      "year": 2012,
+      "iso3": "TUR",
+      "people": 34827
+    },
+    {
+      "year": 2013,
+      "iso3": "TUR",
+      "people": 45338
+    },
+    {
+      "year": 2014,
+      "iso3": "TUR",
+      "people": 103760
+    },
+    {
+      "year": 2015,
+      "iso3": "TUR",
+      "people": 282006
+    },
+    {
+      "year": 2016,
+      "iso3": "TUR",
+      "people": 354348
+    },
+    {
+      "year": 2017,
+      "iso3": "TUR",
+      "people": 490239
+    },
+    {
+      "year": 2018,
+      "iso3": "TUR",
+      "people": 514557
+    },
+    {
+      "year": 2019,
+      "iso3": "TUR",
+      "people": 350401
+    },
+    {
+      "year": 2020,
+      "iso3": "TUR",
+      "people": 379531
+    },
+    {
+      "year": 2021,
+      "iso3": "TUR",
+      "people": 406833
+    },
+    {
+      "year": 2022,
+      "iso3": "TUR",
+      "people": 397020
+    },
+    {
+      "year": 2023,
+      "iso3": "TUR",
+      "people": 118790
+    },
+    {
+      "year": 2024,
+      "iso3": "TUR",
+      "people": 83629
+    },
+    {
+      "year": 2001,
+      "iso3": "USA",
+      "people": 7756
+    },
+    {
+      "year": 2002,
+      "iso3": "USA",
+      "people": 9227
+    },
+    {
+      "year": 2003,
+      "iso3": "USA",
+      "people": 9821
+    },
+    {
+      "year": 2004,
+      "iso3": "USA",
+      "people": 9923
+    },
+    {
+      "year": 2005,
+      "iso3": "USA",
+      "people": 8931
+    },
+    {
+      "year": 2006,
+      "iso3": "USA",
+      "people": 13348
+    },
+    {
+      "year": 2007,
+      "iso3": "USA",
+      "people": 2438
+    },
+    {
+      "year": 2008,
+      "iso3": "USA",
+      "people": 2164
+    },
+    {
+      "year": 2009,
+      "iso3": "USA",
+      "people": 1771
+    },
+    {
+      "year": 2010,
+      "iso3": "USA",
+      "people": 1410
+    },
+    {
+      "year": 2011,
+      "iso3": "USA",
+      "people": 1210
+    },
+    {
+      "year": 2012,
+      "iso3": "USA",
+      "people": 1147
+    },
+    {
+      "year": 2013,
+      "iso3": "USA",
+      "people": 1309
+    },
+    {
+      "year": 2014,
+      "iso3": "USA",
+      "people": 1622
+    },
+    {
+      "year": 2015,
+      "iso3": "USA",
+      "people": 1970
+    },
+    {
+      "year": 2016,
+      "iso3": "USA",
+      "people": 2250
+    },
+    {
+      "year": 2017,
+      "iso3": "USA",
+      "people": 2374
+    },
+    {
+      "year": 2018,
+      "iso3": "USA",
+      "people": 2364
+    },
+    {
+      "year": 2019,
+      "iso3": "USA",
+      "people": 2356
+    },
+    {
+      "year": 2020,
+      "iso3": "USA",
+      "people": 2388
+    },
+    {
+      "year": 2021,
+      "iso3": "USA",
+      "people": 2861
+    },
+    {
+      "year": 2022,
+      "iso3": "USA",
+      "people": 22391
+    },
+    {
+      "year": 2023,
+      "iso3": "USA",
+      "people": 43759
+    },
+    {
+      "year": 2024,
+      "iso3": "USA",
+      "people": 57034
+    }
+  ]
+}

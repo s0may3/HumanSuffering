@@ -15,8 +15,8 @@ export async function update(ctx) {
     tip.id = "viz-tooltip";
     tip.style.position = "fixed";
     tip.style.pointerEvents = "none";
-    tip.style.background = "rgba(2,6,23,.92)";
-    tip.style.border = "1px solid rgba(148,163,184,.25)";
+    tip.style.background = "rgba(2,6,23,92)";
+    tip.style.border = "1px solid rgba(148,163,184,25)";
     tip.style.borderRadius = "10px";
     tip.style.padding = "8px 10px";
     tip.style.color = theme.text;
@@ -44,39 +44,76 @@ export async function update(ctx) {
     return fmtShort(n).replace("G", "B").replace("k", "K");
   }
 
-  // ---------- load data (your dataset) ----------
-  const rows = await d3.csv("./dataset/hdx_hapi_refugees_afg.csv");
-
-  const parseYear = (d) => {
-    if (!d) return null;
-    const s = String(d).trim();
-    if (/^\d{4}/.test(s)) return +s.slice(0, 4);
-    const p = s.split(/[\/\-]/);
-    return p.length === 3 ? +p[2] : null;
-  };
   const toNumber = (x) => {
     const n = +String(x ?? "").replace(/,/g, "").trim();
     return Number.isFinite(n) ? n : 0;
   };
+
+  async function tryLoadCsv(path) {
+    try {
+      const rows = await d3.csv(path);
+      return rows && rows.length ? rows : null;
+    } catch {
+      return null;
+    }
+  }
+
+  // ---------- load PREPROCESSED data ----------
+  // Expected columns: year, iso3, value
+  const candidates = [
+    "./data/processed/destinations_yearly_top12.csv",
+    "./dataset/derived/destinations_yearly_top12.csv",
+  ];
+
+  let rows = null;
+  for (const p of candidates) {
+    rows = await tryLoadCsv(p);
+    if (rows) break;
+  }
+
+  if (!rows) {
+    g.marks.append("text")
+      .attr("x", 16).attr("y", 26)
+      .attr("fill", theme.context).attr("font-size", 12)
+      .text("Missing processed destinations file: data/processed/destinations_trend_top.csv");
+    return;
+  }
+
+  // detect keys robustly (year / iso3 / value)
+  const keys = Object.keys(rows[0] || {});
+  const lower = (s) => String(s || "").toLowerCase();
+
+  const yearKey =
+    keys.find(k => lower(k) === "year") ||
+    keys.find(k => lower(k).includes("year")) ||
+    keys[0];
+
+  const isoKey =
+    keys.find(k => lower(k) === "iso3") ||
+    keys.find(k => lower(k).includes("iso")) ||
+    keys.find(k => lower(k).includes("asylum")) ||
+    keys[1];
+
+  const valueKey =
+    keys.find(k => lower(k) === "value") ||
+    keys.find(k => lower(k).includes("value")) ||
+    keys.find(k => lower(k).includes("pop")) ||
+    keys.find(k => k !== yearKey && k !== isoKey) ||
+    keys[2];
 
   // aggregate by (year, dest)
   const byYearDest = new Map(); // `${year}|${iso3}` => value
   let latestYear = null;
 
   for (const r of rows) {
-    if ((r.origin_location_code || "").trim() !== "AFG") continue;
-
-    const y = parseYear(r.reference_period_start);
-    if (!y) continue;
+    const y = +r[yearKey];
+    if (!Number.isFinite(y)) continue;
     if (!latestYear || y > latestYear) latestYear = y;
 
-    const group = (r.population_group || "").trim().toUpperCase();
-    if (group && group !== "REF" && group !== "ASY") continue;
-
-    const dest = (r.asylum_location_code || "").trim().toUpperCase();
+    const dest = (r[isoKey] || "").trim().toUpperCase();
     if (!dest || dest === "AFG") continue;
 
-    const pop = toNumber(r.population);
+    const pop = toNumber(r[valueKey]);
     if (pop <= 0) continue;
 
     const k = `${y}|${dest}`;
@@ -180,14 +217,14 @@ export async function update(ctx) {
     .attr("width", colW)
     .attr("height", listH)
     .attr("rx", 12)
-    .attr("fill", "rgba(15,23,42,.28)")
-    .attr("stroke", "rgba(148,163,184,.10)");
+    .attr("fill", "rgba(15,23,42,28)")
+    .attr("stroke", "rgba(148,163,184,10)");
 
   // faint baseline for dot track
   listG.append("line")
     .attr("x1", 90).attr("x2", (W - colW - 12))
     .attr("y1", 8).attr("y2", 8)
-    .attr("stroke", "rgba(148,163,184,.14)");
+    .attr("stroke", "rgba(148,163,184,14)");
 
   const row = listG.selectAll("g.row")
     .data(top)
@@ -213,17 +250,17 @@ export async function update(ctx) {
     .attr("x1", 90).attr("x2", (W - colW - 12))
     .attr("y1", yBand.bandwidth() / 2)
     .attr("y2", yBand.bandwidth() / 2)
-    .attr("stroke", "rgba(148,163,184,.10)");
+    .attr("stroke", "rgba(148,163,184,10)");
 
   // rank dot
-  const dots = row.append("circle")
+  row.append("circle")
     .attr("data-role", "rankDot")
     .attr("cx", d => xDot(d.value))
     .attr("cy", yBand.bandwidth() / 2)
     .attr("r", 6.5)
     .attr("fill", C_DEST)
     .attr("opacity", 0.55)
-    .attr("stroke", "rgba(148,163,184,.25)");
+    .attr("stroke", "rgba(148,163,184,25)");
 
   // mini bar track
   row.append("rect")
@@ -233,7 +270,7 @@ export async function update(ctx) {
     .attr("width", barW)
     .attr("height", barH)
     .attr("rx", barR)
-    .attr("fill", "rgba(148,163,184,.10)");
+    .attr("fill", "rgba(148,163,184,10)");
 
   // mini bar fill
   row.append("rect")
@@ -317,10 +354,12 @@ export async function update(ctx) {
     const iso = selected || top[0].iso3;
     const s = seriesByISO3.get(iso) || [];
     const maxY = d3.max(s, d => d.value) || 1;
+const headerH = 44; // NEW: reserved space for title/subtitle
 
-    const m2 = { top: 20, right: 10, bottom: 26, left: 50 };
-    const CW = Math.max(10, W - m2.left - m2.right);
-    const CH = Math.max(10, chartH - m2.top - m2.bottom);
+    const m2 = { top: headerH + 10, right: 10, bottom: 44, left: 50 };
+
+const CW = Math.max(10, W - m2.left - m2.right);
+const CH = Math.max(10, chartH - m2.top - m2.bottom);
 
     const cg = chartG.append("g").attr("transform", `translate(${m2.left},${m2.top})`);
 
@@ -336,13 +375,13 @@ export async function update(ctx) {
     chartG.append("g")
       .attr("transform", `translate(${m2.left},${m2.top + CH})`)
       .call(d3.axisBottom(x).ticks(Math.min(6, years.length)).tickFormat(d3.format("d")))
-      .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,.22)"))
+      .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,22)"))
       .call(sel => sel.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
 
     chartG.append("g")
       .attr("transform", `translate(${m2.left},${m2.top})`)
       .call(d3.axisLeft(y).ticks(4).tickFormat(d3.format(".2s")))
-      .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,.22)"))
+      .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,22)"))
       .call(sel => sel.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
 
     chartG.append("text")
@@ -358,7 +397,7 @@ export async function update(ctx) {
       .attr("y", 30)
       .attr("fill", theme.mutedText)
       .attr("font-size", 10)
-      .text("Hover points for values (same dataset, multiple years)");
+      .text("(Number of people, years)");
 
     const line = d3.line()
       .x(d => x(d.year))
@@ -385,7 +424,7 @@ export async function update(ctx) {
       .attr("r", d => (d.year === lastYear ? 5.5 : 4.5))
       .attr("fill", d => (d.year === lastYear ? C_FOCUS : C_DEST))
       .attr("opacity", 0.95)
-      .attr("stroke", "rgba(148,163,184,.25)")
+      .attr("stroke", "rgba(148,163,184,25)")
       .style("cursor", "default")
       .on("mouseenter", (event, d) => {
         showTip(event, `

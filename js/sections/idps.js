@@ -4,57 +4,103 @@ import { markColor } from "../theme.js";
 export async function update(ctx) {
   const { g, width, height, theme } = ctx;
 
-  // ---------- 1) Load IDPs data ----------
-  const rows = await d3.csv("./dataset/hdx_hapi_idps_afg.csv");
+  // clear
+  g.marks.selectAll("*").remove();
+  g.axes.selectAll("*").remove();
+  g.anno.selectAll("*").remove();
+  g.root.selectAll("*").remove();
+  g.ui.selectAll("*").remove();
 
+  // ---------- helper ----------
   const toNumber = (x) => {
-    const n = +String(x).replace(/,/g, "").trim();
+    const n = +String(x ?? "").replace(/,/g, "").trim();
     return Number.isFinite(n) ? n : 0;
   };
 
-  const parseDate = (s) => {
-    const d = new Date(String(s).trim());
-    return isNaN(d.getTime()) ? null : d;
-  };
+  async function tryLoadCsv(path) {
+    try {
+      const r = await d3.csv(path);
+      return r && r.length ? r : null;
+    } catch {
+      return null;
+    }
+  }
 
-  const level1 = rows.filter(r => String(r.admin_level).trim() === "1");
-  if (!level1.length) {
+  // ---------- 1) Load PREPROCESSED IDPs snapshot ----------
+  const candidates = [
+    "./data/processed/idps_latest_by_province.csv",
+    "./dataset/derived/idps_latest_by_province.csv",
+    "./data/processed/idps_latest.csv",
+    "./dataset/derived/idps_latest.csv",
+  ];
+
+  let rows = null;
+  let usedPath = null;
+  for (const p of candidates) {
+    rows = await tryLoadCsv(p);
+    if (rows) { usedPath = p; break; }
+  }
+
+  if (!rows) {
     g.marks.append("text")
       .attr("x", 20).attr("y", 30)
       .attr("fill", theme.context).attr("font-size", 12)
-      .text("No admin_level=1 records found in IDPs dataset.");
+      .text("Missing preprocessed IDPs file. Expected data/processed/idps_latest_by_province.csv");
     return;
   }
 
-  // ---------- 2) Latest date ----------
-  let latest = null;
-  for (const r of level1) {
-    const d = parseDate(r.reference_period_start);
-    if (d && (!latest || d > latest)) latest = d;
-  }
-  if (!latest) {
-    g.marks.append("text")
-      .attr("x", 20).attr("y", 30)
-      .attr("fill", theme.context).attr("font-size", 12)
-      .text("Could not parse reference_period_start.");
-    return;
-  }
-  const latestISO = latest.toISOString().slice(0, 10);
+  // detect columns
+  const keys = Object.keys(rows[0] || {});
+  const lower = (s) => String(s || "").toLowerCase();
 
-  // ---------- 3) Aggregate IDPs by province ----------
-  const idpsByProvince = new Map();
-  for (const r of level1) {
-    const d = parseDate(r.reference_period_start);
-    if (!d || d.getTime() !== latest.getTime()) continue;
+  const provinceKey =
+    keys.find(k => ["province", "admin1_name", "adm1", "name"].includes(lower(k))) ||
+    keys.find(k => lower(k).includes("admin1")) ||
+    keys.find(k => lower(k).includes("province")) ||
+    keys[0];
 
-    const name = (r.admin1_name || "").trim();
+  const idpsKey =
+    keys.find(k => ["idps", "population", "count", "value"].includes(lower(k))) ||
+    keys.find(k => lower(k).includes("idp")) ||
+    keys.find(k => lower(k).includes("pop")) ||
+    keys.find(k => k !== provinceKey);
+
+  const dateKey =
+    keys.find(k => ["latestiso", "reference_date", "date", "latest_date"].includes(lower(k))) ||
+    keys.find(k => lower(k).includes("date")) ||
+    null;
+
+  // extract latestISO (optional)
+  let latestISO = "unknown";
+  if (dateKey) {
+    const d = (rows[0][dateKey] || "").trim();
+    if (d) latestISO = d;
+  }
+
+  // build lookup: normalized province -> idps
+  const norm = (s) =>
+    String(s || "")
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .replace(/[^\w\s]/g, "")
+      .trim();
+
+  const alias = new Map([
+    ["nimroz", "nimruz"],
+    ["daykundi", "daikundi"],
+  ]);
+
+  const lookup = new Map();
+  for (const r of rows) {
+    const name = (r[provinceKey] || "").trim();
     if (!name) continue;
-
-    const pop = toNumber(r.population);
-    idpsByProvince.set(name, (idpsByProvince.get(name) || 0) + pop);
+    const v = toNumber(r[idpsKey]);
+    const k0 = norm(name);
+    const k = alias.get(k0) || k0;
+    lookup.set(k, (lookup.get(k) || 0) + v);
   }
 
-  // ---------- 4) Load LOCAL GeoJSON ----------
+  // ---------- 2) Load GeoJSON ----------
   const geoPath = "./dataset/geo/afghanistan_adm1.geojson";
   let geo;
   try {
@@ -75,32 +121,12 @@ export async function update(ctx) {
     return;
   }
 
-  // ---------- 5) Name normalization ----------
-  const norm = (s) =>
-    String(s || "")
-      .toLowerCase()
-      .replace(/\s+/g, " ")
-      .replace(/[^\w\s]/g, "")
-      .trim();
-
-  const alias = new Map([
-    ["nimroz", "nimruz"],
-    ["daykundi", "daikundi"],
-  ]);
-
-  const lookup = new Map();
-  for (const [name, val] of idpsByProvince.entries()) {
-    const k0 = norm(name);
-    const k = alias.get(k0) || k0;
-    lookup.set(k, val);
-  }
-
   const getShapeName = (f) => {
     const p = f.properties || {};
     return p.shapeName || p.NAME_1 || p.name || "";
   };
 
-  // ---------- 6) Values & color ----------
+  // ---------- 3) Colors ----------
   const values = geo.features.map(f => {
     const name = getShapeName(f);
     const key = alias.get(norm(name)) || norm(name);
@@ -109,7 +135,6 @@ export async function update(ctx) {
 
   const nonZero = values.filter(v => v > 0);
 
-  // Quantiles for readability
   const quant = d3.scaleQuantile()
     .domain(nonZero.length ? nonZero : [1])
     .range([
@@ -125,42 +150,44 @@ export async function update(ctx) {
     return quant(v);
   };
 
-  // ---------- 7) Layout ----------
+  // ---------- 4) Layout / projection ----------
   const margin = { top: 10, right: 10, bottom: 10, left: 10 };
   const w = Math.max(10, width - margin.left - margin.right);
   const h = Math.max(10, height - margin.top - margin.bottom);
 
   const chart = g.root.attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // geoIdentity avoids projection mismatch for some GeoJSON files
   const projection = d3.geoIdentity()
     .reflectY(true)
     .fitSize([w, h], geo);
 
   const path = d3.geoPath(projection);
 
-  // ---------- 8) Tooltip ----------
+  // ---------- 5) Tooltip ----------
   let tip = document.getElementById("viz-tooltip");
   if (!tip) {
     tip = document.createElement("div");
     tip.id = "viz-tooltip";
     tip.style.position = "fixed";
     tip.style.pointerEvents = "none";
-    tip.style.background = "rgba(2,6,23,.92)";
-    tip.style.border = "1px solid rgba(148,163,184,.25)";
+    tip.style.background = "rgba(2,6,23,92)";
+    tip.style.border = "1px solid rgba(148,163,184,25)";
     tip.style.borderRadius = "10px";
     tip.style.padding = "8px 10px";
     tip.style.color = theme.text;
     tip.style.fontSize = "12px";
     tip.style.display = "none";
+    tip.style.zIndex = "2147483647";
     document.body.appendChild(tip);
+  } else {
+    tip.style.zIndex = "2147483647";
   }
 
   const fmt = d3.format(",");
 
-  // ---------- 9) Draw map ----------
-  const baseStroke = "rgba(148,163,184,.25)";
-  const hoverStroke = "rgba(229,231,235,.85)"; // ✅ neutral highlight (no pink)
+  // ---------- 6) Draw map (interactive like before) ----------
+  const baseStroke = "rgba(148,163,184,25)";
+  const hoverStroke = "rgba(229,231,235,85)";
 
   chart.selectAll("path.province")
     .data(geo.features)
@@ -186,7 +213,7 @@ export async function update(ctx) {
       tip.innerHTML = `
         <div style="font-weight:600;">${name}</div>
         <div style="color:${theme.mutedText};">IDPs (count): ${fmt(v)}</div>
-        <div style="color:${theme.mutedText}; margin-top:4px;">Reference date: ${latestISO}</div>
+        
       `;
       tip.style.display = "block";
     })
@@ -200,7 +227,7 @@ export async function update(ctx) {
       tip.style.display = "none";
     });
 
-  // ---------- 10) Title note ----------
+  // ---------- 7) small note ----------
   chart.append("text")
     .attr("x", w)
     .attr("y", 14)

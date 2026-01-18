@@ -1,0 +1,53 @@
+{
+  "latest_year": 2024,
+  "top12": [
+    {
+      "iso3": "IRN",
+      "people_latest_year": 10431246
+    },
+    {
+      "iso3": "PAK",
+      "people_latest_year": 5214072
+    },
+    {
+      "iso3": "DEU",
+      "people_latest_year": 972269
+    },
+    {
+      "iso3": "FRA",
+      "people_latest_year": 195454
+    },
+    {
+      "iso3": "AUT",
+      "people_latest_year": 147016
+    },
+    {
+      "iso3": "GBR",
+      "people_latest_year": 113971
+    },
+    {
+      "iso3": "GRC",
+      "people_latest_year": 87720
+    },
+    {
+      "iso3": "TUR",
+      "people_latest_year": 83629
+    },
+    {
+      "iso3": "SWE",
+      "people_latest_year": 74805
+    },
+    {
+      "iso3": "CHE",
+      "people_latest_year": 62641
+    },
+    {
+      "iso3": "ITA",
+      "people_latest_year": 62637
+    },
+    {
+      "iso3": "USA",
+      "people_latest_year": 57034
+    }
+  ]
+}

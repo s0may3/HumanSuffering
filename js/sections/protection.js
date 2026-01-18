@@ -16,8 +16,8 @@ export async function update(ctx) {
     tip.id = "viz-tooltip";
     tip.style.position = "fixed";
     tip.style.pointerEvents = "none";
-    tip.style.background = "rgba(2,6,23,.92)";
-    tip.style.border = "1px solid rgba(148,163,184,.25)";
+    tip.style.background = "rgba(2,6,23,92)";
+    tip.style.border = "1px solid rgba(148,163,184,25)";
     tip.style.borderRadius = "10px";
     tip.style.padding = "8px 10px";
     tip.style.color = theme.text;
@@ -61,95 +61,138 @@ export async function update(ctx) {
     }
   }
 
-  // ---------- datasets (your repo only) ----------
-  const refugeesPath = "./dataset/hdx_hapi_refugees_afg.csv";
-  const returneesCandidates = [
-    "./dataset/hdx_hapi_returnees_afg.csv",
-    "./dataset/hdx_hapi_afg_returnees.csv",
-    "./dataset/hdx_hapi_returnees.csv",
+  // ==========================================================
+  // 0) Try PREPROCESSED first: data/processed/protection_composition.csv
+  // ==========================================================
+  const processedCandidates = [
+    "./data/processed/protection_composition.csv",
+    "./data/processed/protection_composition_by_year.csv",
+    "./dataset/derived/protection_composition.csv",
+    "./dataset/derived/protection_composition_by_year.csv",
   ];
 
-  const refugees = await tryLoadCsv(refugeesPath);
-
-  let returnees = null;
-  for (const p of returneesCandidates) {
-    returnees = await tryLoadCsv(p);
-    if (returnees) break;
+  let processed = null;
+  for (const p of processedCandidates) {
+    processed = await tryLoadCsv(p);
+    if (processed) break;
   }
 
-  if (!refugees && !returnees) {
-    g.marks.append("text")
-      .attr("x", 18).attr("y", 30)
-      .attr("fill", theme.text).attr("font-size", 13).attr("font-weight", 700)
-      .text("Section 6: missing datasets");
+  // We'll build `rows` = [{year, REF, ASY, RET, total}, ...]
+  let rows = null;
 
-    g.marks.append("text")
-      .attr("x", 18).attr("y", 54)
-      .attr("fill", theme.mutedText).attr("font-size", 12)
-      .text("Expected at least ./dataset/hdx_hapi_refugees_afg.csv (and optionally returnees).");
-    return;
+  if (processed) {
+    // detect columns robustly
+    const keys = Object.keys(processed[0] || {});
+    const lower = (s) => String(s || "").toLowerCase();
+
+    const yearKey = keys.find(k => lower(k) === "year") || keys[0];
+    const refKey  = keys.find(k => lower(k) === "ref")  || keys.find(k => lower(k).includes("ref")) || "REF";
+    const asyKey  = keys.find(k => lower(k) === "asy")  || keys.find(k => lower(k).includes("asy")) || "ASY";
+    const retKey  = keys.find(k => lower(k) === "ret")  || keys.find(k => lower(k).includes("ret")) || "RET";
+
+    rows = processed
+      .map(r => {
+        const year = +r[yearKey];
+        const REF = toNumber(r[refKey]);
+        const ASY = toNumber(r[asyKey]);
+        const RET = toNumber(r[retKey]);
+        const total = REF + ASY + RET;
+        return { year, REF, ASY, RET, total };
+      })
+      .filter(d => Number.isFinite(d.year) && d.total > 0)
+      .sort((a, b) => a.year - b.year);
   }
 
-  // ---------- aggregate yearly totals ----------
-  const yearly = new Map(); // year => { REF, ASY, RET }
+  // ==========================================================
+  // 1) Fallback: RAW aggregation (your current logic)
+  // ==========================================================
+  if (!rows) {
+    const refugeesPath = "./dataset/hdx_hapi_refugees_afg.csv";
+    const returneesCandidates = [
+      "./dataset/hdx_hapi_returnees_afg.csv",
+      "./dataset/hdx_hapi_afg_returnees.csv",
+      "./dataset/hdx_hapi_returnees.csv",
+    ];
 
-  function ensureYear(y) {
-    if (!yearly.has(y)) yearly.set(y, { REF: 0, ASY: 0, RET: 0 });
-    return yearly.get(y);
-  }
+    const refugees = await tryLoadCsv(refugeesPath);
 
-  // REF/ASY from refugees dataset (origin AFG)
-  if (refugees) {
-    for (const r of refugees) {
-      if ((r.origin_location_code || "").trim() !== "AFG") continue;
-      const y = parseYear(r.reference_period_start);
-      if (!y) continue;
-
-      const group = (r.population_group || "").trim().toUpperCase();
-      const pop = toNumber(r.population);
-      if (pop <= 0) continue;
-
-      if (group !== "REF" && group !== "ASY") continue;
-
-      const row = ensureYear(y);
-      row[group] += pop;
+    let returnees = null;
+    for (const p of returneesCandidates) {
+      returnees = await tryLoadCsv(p);
+      if (returnees) break;
     }
-  }
 
-  // Returnees -> RET (best effort)
-  if (returnees) {
-    for (const r of returnees) {
-      const y =
-        parseYear(r.reference_period_start) ??
-        parseYear(r.reference_period) ??
-        parseYear(r.date) ??
-        parseYear(r.period_start) ??
-        (String(r.year || "").match(/^\d{4}$/) ? +r.year : null);
+    if (!refugees && !returnees) {
+      g.marks.append("text")
+        .attr("x", 18).attr("y", 30)
+        .attr("fill", theme.text).attr("font-size", 13).attr("font-weight", 700)
+        .text("Section 6: missing datasets");
 
-      if (!y) continue;
-
-      const pop =
-        toNumber(r.population) ||
-        toNumber(r.value) ||
-        toNumber(r.count) ||
-        toNumber(r.returnees) ||
-        0;
-
-      if (pop <= 0) continue;
-
-      const row = ensureYear(y);
-      row.RET += pop;
+      g.marks.append("text")
+        .attr("x", 18).attr("y", 54)
+        .attr("fill", theme.mutedText).attr("font-size", 12)
+        .text("Expected at least ./dataset/hdx_hapi_refugees_afg.csv (and optionally returnees).");
+      return;
     }
-  }
 
-  // rows
-  const rows = Array.from(yearly.entries())
-    .map(([year, d]) => {
-      const total = (d.REF || 0) + (d.ASY || 0) + (d.RET || 0);
-      return { year: +year, REF: d.REF || 0, ASY: d.ASY || 0, RET: d.RET || 0, total };
-    })
-    .filter(d => d.total > 0)
-    .sort((a, b) => a.year - b.year);
+    const yearly = new Map(); // year => { REF, ASY, RET }
+    function ensureYear(y) {
+      if (!yearly.has(y)) yearly.set(y, { REF: 0, ASY: 0, RET: 0 });
+      return yearly.get(y);
+    }
+
+    // REF/ASY from refugees dataset (origin AFG)
+    if (refugees) {
+      for (const r of refugees) {
+        if ((r.origin_location_code || "").trim() !== "AFG") continue;
+        const y = parseYear(r.reference_period_start);
+        if (!y) continue;
+
+        const group = (r.population_group || "").trim().toUpperCase();
+        const pop = toNumber(r.population);
+        if (pop <= 0) continue;
+
+        if (group !== "REF" && group !== "ASY") continue;
+
+        const row = ensureYear(y);
+        row[group] += pop;
+      }
+    }
+
+    // Returnees -> RET (best effort)
+    if (returnees) {
+      for (const r of returnees) {
+        const y =
+          parseYear(r.reference_period_start) ??
+          parseYear(r.reference_period) ??
+          parseYear(r.date) ??
+          parseYear(r.period_start) ??
+          (String(r.year || "").match(/^\d{4}$/) ? +r.year : null);
+
+        if (!y) continue;
+
+        const pop =
+          toNumber(r.population) ||
+          toNumber(r.value) ||
+          toNumber(r.count) ||
+          toNumber(r.returnees) ||
+          0;
+
+        if (pop <= 0) continue;
+
+        const row = ensureYear(y);
+        row.RET += pop;
+      }
+    }
+
+    rows = Array.from(yearly.entries())
+      .map(([year, d]) => {
+        const total = (d.REF || 0) + (d.ASY || 0) + (d.RET || 0);
+        return { year: +year, REF: d.REF || 0, ASY: d.ASY || 0, RET: d.RET || 0, total };
+      })
+      .filter(d => d.total > 0)
+      .sort((a, b) => a.year - b.year);
+  }
 
   if (!rows.length) {
     g.marks.append("text")
@@ -207,12 +250,10 @@ export async function update(ctx) {
     .text("Stacked area = share. Hover to see counts + percentages.");
 
   // ---------- CLEAN LEGEND (inside chart frame, stacked order) ----------
-  // Put legend inside plot, away from title zone.
   const leg = g.anno.append("g")
     .attr("transform", `translate(${m.left + 8}, ${m.top + 18})`);
 
   const legendItems = [];
-  // order must match stack reading (bottom -> top)
   if (hasRET) legendItems.push({ key: "RET", label: "Returnees (RET)", color: C_RET, opacity: 0.80 });
   if (hasREF) legendItems.push({ key: "REF", label: "Refugees (REF)", color: C_REF, opacity: 0.75 });
   if (hasASY) legendItems.push({ key: "ASY", label: "Asylum-seekers (ASY)", color: C_ASY, opacity: 0.95 });
@@ -250,13 +291,13 @@ export async function update(ctx) {
   g.axes.append("g")
     .attr("transform", `translate(${m.left},${m.top + H})`)
     .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format("d")))
-    .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,.22)"))
+    .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,22)"))
     .call(sel => sel.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
 
   g.axes.append("g")
     .attr("transform", `translate(${m.left},${m.top})`)
     .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format(".0%")))
-    .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,.22)"))
+    .call(sel => sel.selectAll("path, line").attr("stroke", "rgba(148,163,184,22)"))
     .call(sel => sel.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
 
   // subtle grid
@@ -264,7 +305,7 @@ export async function update(ctx) {
     .attr("opacity", 0.16)
     .call(d3.axisLeft(y).ticks(5).tickSize(-W).tickFormat(""))
     .call(sel => sel.selectAll("path").remove())
-    .call(sel => sel.selectAll("line").attr("stroke", "rgba(148,163,184,.22)"));
+    .call(sel => sel.selectAll("line").attr("stroke", "rgba(148,163,184,22)"));
 
   // stack + area
   const stack = d3.stack().keys(keys);
@@ -283,7 +324,6 @@ export async function update(ctx) {
     .attr("class", "layer")
     .attr("fill", d => color(d.key))
     .attr("opacity", d => {
-      // hierarchy: REF base less intense; ASY highlight; RET episodic
       if (d.key === "REF") return 0.75;
       if (d.key === "ASY") return 0.95;
       if (d.key === "RET") return 0.80;
@@ -299,7 +339,7 @@ export async function update(ctx) {
   const guide = root.append("line")
     .attr("y1", 0)
     .attr("y2", H)
-    .attr("stroke", "rgba(251,191,36,.35)")
+    .attr("stroke", "rgba(251,191,36,35)")
     .attr("stroke-width", 1)
     .attr("opacity", 0);
 
@@ -320,7 +360,7 @@ export async function update(ctx) {
 
     const lines = parts
       .filter(p => p.v > 0)
-      .map(p => `<div style="color:${theme.mutedText};">${labelKey(p.k)}: ${fmt(p.v)} <span style="opacity:.9">(${(p.s*100).toFixed(1)}%)</span></div>`)
+      .map(p => `<div style="color:${theme.mutedText};">${labelKey(p.k)}: ${fmt(p.v)} <span style="opacity:.9">(${(p.s * 100).toFixed(1)}%)</span></div>`)
       .join("");
 
     return `

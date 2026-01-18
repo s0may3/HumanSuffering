@@ -1,2 +1,0 @@
-location_code,has_hrp,in_gho,risk_class,global_rank,overall_risk,hazard_exposure_risk,vulnerability_risk,coping_capacity_risk,meta_missing_indicators_pct,meta_avg_recentness_years,reference_period_start,reference_period_end
-AFG,True,True,5,4,8.1,8.7,8.5,7.1,0.0784313725490196,0.26,2024-01-01,2024-12-31
