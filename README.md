@@ -81,8 +81,9 @@ The notebooks generate **processed CSV files** used by the website.
 
 ---
 
-## 3) Folder structure
+## Folder structure
 
+```text
 .
 ├─ index.html
 ├─ js/
@@ -113,9 +114,7 @@ The notebooks generate **processed CSV files** used by the website.
 │     ├─ destinations_yearly_top12.csv
 │     └─ protection_composition_by_year.csv
 └─ notebooks/
-   └─ jupyter_preprocess_notebooks_v2.zip
-
----
+   └─ jupyter_preprocess_notebooks_v2.zip---
 
 ## 4) Which visualization uses which data?
 
