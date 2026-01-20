@@ -145,7 +145,8 @@ export async function update(ctx) {
     .attr("x", 0).attr("y", 32)
     .attr("fill", theme.mutedText)
     .attr("font-size", 10)
-    .text("Ridgeline plot · Hover to inspect each year · Median + IQR shown");
+    .text("Ridgeline plot · Median + IQR shown · N = number of food samples");
+
 
   g.ui.append("text")
     .attr("x", W).attr("y", 32)
@@ -214,6 +215,14 @@ export async function update(ctx) {
     .call(d3.axisBottom(x).ticks(6).tickFormat(d => `${d3.format(".0f")(d)}%`))
     .call(s => s.selectAll("path,line").attr("stroke", "rgba(148,163,184,.22)"))
     .call(s => s.selectAll("text").attr("fill", theme.mutedText).attr("font-size", 10));
+// X-axis label
+g.axes.append("text")
+  .attr("x", margin.left + W / 2)
+  .attr("y", margin.top + H + 36)
+  .attr("text-anchor", "middle")
+  .attr("fill", theme.mutedText)
+  .attr("font-size", 10)
+  .text("Year-over-year food price change (%)");
 
   g.axes.append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`)
