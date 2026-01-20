@@ -470,7 +470,7 @@
 
     <section class="hero" aria-label="Hero section">
       <div class="pill"><span class="dot"></span><span>Storytelling • Afghan Migration</span></div>
-      <h1>Afghan Migration: Pressure, Routes, Destinations and Outcomes</h1>
+      <h1>Afghan Migration: Persistent Pressure and Uncertain Futures</h1>
       
 
       <div class="team-block" aria-label="Team and data source">
@@ -492,12 +492,10 @@
           </p>
 
           <p>
-            Rather than focusing on individual events, this overview highlights how migration pressure has persisted and changed over time. Viewing the full timeline helps establish a baseline before examining specific shocks, routes, and destinations in later sections.
+            Rather than focusing on individual events, this overview highlights how migration pressure has persisted and changed over time. Viewing the full timeline helps establish a baseline before examining specific shocks, routes, and destinations.The pattern suggests sustained pressure rather than a series of isolated crises.
           </p>
 
-          <p class="note">
-            Units: people (counts). Time scale: annual. Geography: origin Afghanistan → destination country.
-          </p>
+         
         </div>
 
         <div class="step" data-mode="shocks">
@@ -505,16 +503,15 @@
           <h2>Shocks and economic volatility</h2>
 
           <p>
-            Instead of looking at migration directly, this section focuses on economic instability as contextual background.
-          </p>
+            Instead of looking at migration numbers alone, it is important to consider the economic conditions that shape everyday decisions.
 
-          <p>
-            The chart shows the distribution of food price changes over time. Large deviations in this distribution represent periods of economic shock, highlighting how volatility — rather than gradual trends — shapes everyday conditions.
-          </p>
+Changes in food prices reveal periods of instability that households experience directly. When year-to-year price changes become wider and more uneven, they reflect moments of economic stress rather than gradual adjustment.
 
-          <p class="note">
-            Chart type: histogram of food price changes. Values represent year-to-year changes, aggregated across commodities.
-          </p>
+These periods are marked not only by rising prices, but by increased uncertainty and extreme variations. Such volatility affects livelihoods and coping strategies, shaping the broader context in which mobility and displacement occur.
+
+Looking beyond averages and examining the full range of price changes makes this uncertainty visible, highlighting how economic shocks translate into lived pressure over time.
+
+          
         </div>
 
         <div class="step" data-mode="idps">
@@ -526,7 +523,7 @@ Not all displacement immediately crosses international borders. Internal displac
 
 This map shows the distribution of internally displaced people (IDPs) across provinces. Rather than explaining causes, it highlights spatial concentration — where displacement burdens are highest at a given point in time.
 </p>
-          <p class="note">Map type: Choropleth (admin1). Units: people (counts).</p>
+          
         </div>
 
         <div class="step" data-mode="routes">
@@ -539,32 +536,23 @@ This map shows the distribution of internally displaced people (IDPs) across pro
 
           <p>
             This section maps the most common destination countries for Afghan refugees and asylum-seekers in the latest available year. The visualization highlights both concentration (which countries receive the most) and direction (corridors from Afghanistan to destinations).
+   This view represents a snapshot rather than long-term dynamics.
           </p>
 
-          <p class="note">
-            Map + flow arrows + Sankey. Data: refugee and asylum-seeker counts aggregated by destination country (latest year).
-          </p>
+          
         </div>
 
         <div class="step" data-mode="destinations">
           <h3> Beyond routes: hosting pressure</h3>
           <p>
-            The previous section illustrated the main cross-border routes taken by Afghan refugees
-            and the relative scale of these movements.
-            However, the significance of these flows cannot be fully understood by volume alone.
-          </p>
-          <p>
-            Once refugees arrive at their destinations, the question shifts from
-            <em>where people go</em> to <em>how hosting countries absorb and sustain these populations</em>.
-            Different destinations face markedly different levels of pressure,
-            depending not only on the number of arrivals, but also on their demographic
-            and economic capacity.
-          </p>
-          <p>
-            This section therefore compares Afghan refugee destinations
-            in relation to host-country capacity,
-            highlighting how unevenly the burden of displacement is distributed
-            across destination countries.
+            The previous view illustrated where Afghan refugees go and the main corridors through which they move. However, the significance of these movements cannot be understood by volume alone.
+
+Once people arrive at their destinations, the question shifts from where they go to how different countries absorb and sustain these populations. Hosting pressure is shaped not only by the number of arrivals, but by how unevenly displacement is distributed across destination countries.
+
+Some destinations receive disproportionately large shares of Afghan refugees, while others host far smaller numbers. This imbalance highlights how the burden of displacement is concentrated rather than evenly shared.
+
+Looking across destinations and over time reveals that hosting pressure is not static. In several countries, refugee populations persist or grow across multiple years, underscoring the long-term nature of displacement and the sustained demands placed on host societies.
+            
           </p>
         </div>
 
@@ -582,9 +570,7 @@ This map shows the distribution of internally displaced people (IDPs) across pro
             It frames displacement as an ongoing condition that can remain unresolved even after crossing borders.
           </p>
 
-          <p class="note">
-            Conceptual focus: protection, return, and uncertainty in displacement outcomes.
-          </p>
+          
         </div>
 
       </div>
@@ -622,7 +608,7 @@ This map shows the distribution of internally displaced people (IDPs) across pro
 
   <p class="methodology-intro">
     This website presents Afghan migration as a <strong>multi-stage human process</strong>,
-    using curated humanitarian datasets and interactive visualizations.
+    using curated humanitarian datasets and interactive visualizations.No predictive modeling or imputation beyond basic cleaning was performed.
   </p>
 
       <h3>Data sources</h3>
@@ -636,7 +622,7 @@ This map shows the distribution of internally displaced people (IDPs) across pro
       <h3>Data cleaning and imputation</h3>
       <p>
         We apply lightweight preprocessing for consistency (numeric parsing, year extraction, and conservative filtering).
-        For transparency, you can download the datasets used by each section and the runnable preprocessing notebooks/scripts.
+        For transparency, you can download the datasets used by each section and the runnable preprocessing notebooks/scripts.No predictive modeling or statistical imputation beyond basic cleaning was performed.
       </p>
 
       <div class="dl-grid">
@@ -725,11 +711,8 @@ This map shows the distribution of internally displaced people (IDPs) across pro
 
   <li>
     <strong>Mapping to visual encodings:</strong>
-    Each metric is mapped to a specific visual form:
-    time-series lines for long-term pressure,
-    histograms for economic shocks,
-    choropleth maps for spatial concentration,
-    and flow diagrams for cross-border movement.
+    Each metric is mapped to a specific visual form, including time-series lines for long-term pressure, distribution-based density plots for economic shocks, choropleth maps for spatial concentration, and flow diagrams for cross-border movement.
+
   </li>
 
   <li>
