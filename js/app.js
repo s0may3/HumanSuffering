@@ -36,7 +36,7 @@ function setLegend(mode) {
   if (!legendEl) return;
 
   // Which global semantic badges should appear in each section?
-  // IMPORTANT: protection uses its own internal legend (REF/ASY/RET), so global legend must be OFF there.
+  
   const visibleKeysByMode = {
     overview: [],
     shocks: [],
