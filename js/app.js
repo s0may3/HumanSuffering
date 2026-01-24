@@ -19,10 +19,10 @@ const legendEl = document.getElementById("legend");
 const headerMap = {
   overview:     { title: "Overview — Migration pressure", sub: "Long-term trend.", pill: "OVERVIEW" },
   shocks:       { title: "Shocks — Economic stress", sub: "Histogram of volatility.", pill: "SHOCKS" },
-  idps:         { title: "Inside Afghanistan — IDPs", sub: "Choropleth map (admin1).", pill: "IDPs" },
+  idps:         { title: "Inside Afghanistan — IDPs", sub: "Choropleth map.", pill: "IDPs" },
   routes:       { title: "Cross-border migration", sub: "Map + flow arrows + Sankey.", pill: "FLOWS" },
-  destinations: { title: "Destinations", sub: "Top destinations + multi-year trend.", pill: "DESTINATIONS" },
-  protection:   { title: "Return & protection", sub: "Outcome composition (100%).", pill: "PROTECTION" },
+  destinations: { title: "Destinations", sub: "Ranked bar distribution + multi-year trend.", pill: "DESTINATIONS" },
+  protection:   { title: "Return & protection", sub: "StackedArea(100%).", pill: "PROTECTION" },
 };
 
 function setHeader(mode) {
