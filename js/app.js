@@ -18,7 +18,7 @@ const legendEl = document.getElementById("legend");
 
 const headerMap = {
   overview:     { title: "Overview — Migration pressure", sub: "Long-term trend.", pill: "OVERVIEW" },
-  shocks:       { title: "Shocks — Economic stress", sub: "Histogram of volatility.", pill: "SHOCKS" },
+  shocks:       { title: "Shocks — Economic stress", sub: "Ridgeline plot.", pill: "SHOCKS" },
   idps:         { title: "Inside Afghanistan — IDPs", sub: "Choropleth map.", pill: "IDPs" },
   routes:       { title: "Cross-border migration", sub: "Map + flow arrows + Sankey.", pill: "FLOWS" },
   destinations: { title: "Destinations", sub: "Ranked bar distribution + multi-year trend.", pill: "DESTINATIONS" },
